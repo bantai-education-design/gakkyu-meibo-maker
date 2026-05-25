@@ -1,5 +1,6 @@
 import type { RosterSettings, Student } from "../types";
 import { CsvImportPanel, type CsvImportStatus } from "./CsvImportPanel";
+import { StoragePanel } from "./StoragePanel";
 import { StudentVisibilityList } from "./StudentVisibilityList";
 
 interface ControlPanelProps {
@@ -7,9 +8,14 @@ interface ControlPanelProps {
   students: Student[];
   version: string;
   csvStatus: CsvImportStatus;
+  storageMessage: string;
+  hasSavedData: boolean;
   onCsvImport: (students: Student[], message: string) => void;
   onCsvError: (message: string) => void;
   onResetSample: () => void;
+  onSaveProject: () => void;
+  onLoadProject: () => void;
+  onDeleteProject: () => void;
   onSettingsChange: (settings: RosterSettings) => void;
   onToggleStudent: (id: string) => void;
   onPrint: () => void;
@@ -20,9 +26,14 @@ export function ControlPanel({
   students,
   version,
   csvStatus,
+  storageMessage,
+  hasSavedData,
   onCsvImport,
   onCsvError,
   onResetSample,
+  onSaveProject,
+  onLoadProject,
+  onDeleteProject,
   onSettingsChange,
   onToggleStudent,
   onPrint
@@ -61,7 +72,15 @@ export function ControlPanel({
         status={csvStatus}
         onImport={onCsvImport}
         onError={onCsvError}
+      />
+
+      <StoragePanel
+        message={storageMessage}
+        hasSavedData={hasSavedData}
+        onSave={onSaveProject}
+        onLoad={onLoadProject}
         onResetSample={onResetSample}
+        onDelete={onDeleteProject}
       />
 
       <section className="panel-section">

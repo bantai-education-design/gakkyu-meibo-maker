@@ -19,14 +19,12 @@ interface CsvImportPanelProps {
   status: CsvImportStatus;
   onImport: (students: Student[], message: string) => void;
   onError: (message: string) => void;
-  onResetSample: () => void;
 }
 
 export function CsvImportPanel({
   status,
   onImport,
-  onError,
-  onResetSample
+  onError
 }: CsvImportPanelProps) {
   const [encoding, setEncoding] = useState<CsvEncoding>("utf-8");
   const [pendingTable, setPendingTable] = useState<CsvTable | null>(null);
@@ -110,9 +108,6 @@ export function CsvImportPanel({
           onCancel={() => setPendingTable(null)}
         />
       ) : null}
-      <button className="secondary-button" type="button" onClick={onResetSample}>
-        サンプル名簿に戻す
-      </button>
     </section>
   );
 }

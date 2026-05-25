@@ -51,8 +51,9 @@ export interface RosterTemplate {
 }
 
 export interface SavedRosterProject {
-  version: 1;
+  version: string;
+  savedAt: string;
   students: Student[];
   settings: RosterSettings;
-  templates: RosterTemplate[];
+  templates?: RosterTemplate[];
 }

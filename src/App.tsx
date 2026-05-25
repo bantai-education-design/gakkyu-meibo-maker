@@ -1,10 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ControlPanel } from "./components/ControlPanel";
 import type { CsvImportStatus } from "./components/CsvImportPanel";
 import { PreviewArea } from "./components/PreviewArea";
 import { sampleStudents } from "./data/sampleStudents";
 import type { RosterSettings, Student } from "./types";
 import { sortStudents } from "./utils/sortStudents";
+import {
+  deleteRosterProject,
+  hasSavedRosterProject,
+  loadRosterProject,
+  saveRosterProject
+} from "./utils/storage";
 import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
@@ -25,13 +31,49 @@ const initialSettings: RosterSettings = {
   }
 };
 
+function loadInitialState() {
+  const saved = loadRosterProject();
+  if (saved) {
+    return {
+      students: saved.students,
+      settings: saved.settings,
+      message: "保存データを読み込みました。"
+    };
+  }
+
+  return {
+    students: sampleStudents,
+    settings: initialSettings,
+    message: "サンプル名簿を表示しています。"
+  };
+}
+
 export default function App() {
-  const [students, setStudents] = useState<Student[]>(sampleStudents);
-  const [settings, setSettings] = useState<RosterSettings>(initialSettings);
+  const initialState = useMemo(() => loadInitialState(), []);
+  const [students, setStudents] = useState<Student[]>(initialState.students);
+  const [settings, setSettings] = useState<RosterSettings>(initialState.settings);
+  const [storageMessage, setStorageMessage] = useState(initialState.message);
+  const [hasSavedData, setHasSavedData] = useState(() => hasSavedRosterProject());
   const [csvStatus, setCsvStatus] = useState<CsvImportStatus>({
     kind: "idle",
-    message: "サンプル名簿を表示しています。"
+    message: initialState.message
   });
+  const skipFirstAutoSave = useRef(true);
+
+  useEffect(() => {
+    if (skipFirstAutoSave.current) {
+      skipFirstAutoSave.current = false;
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      saveRosterProject(students, settings);
+      setHasSavedData(true);
+      setStorageMessage("自動保存しました。");
+    }, 400);
+
+    return () => window.clearTimeout(timer);
+  }, [students, settings]);
 
   const sortedStudents = useMemo(
     () => sortStudents(students, settings.sortMode),
@@ -53,7 +95,34 @@ export default function App() {
 
   const resetSampleStudents = () => {
     setStudents(sampleStudents);
+    setSettings(initialSettings);
     setCsvStatus({ kind: "idle", message: "サンプル名簿に戻しました。" });
+    setStorageMessage("サンプル名簿に戻しました。");
+  };
+
+  const saveCurrentProject = () => {
+    saveRosterProject(students, settings);
+    setHasSavedData(true);
+    setStorageMessage("保存しました。");
+  };
+
+  const loadSavedProject = () => {
+    const saved = loadRosterProject();
+    if (!saved) {
+      setStorageMessage("保存データが見つかりません。");
+      return;
+    }
+
+    setStudents(saved.students);
+    setSettings(saved.settings);
+    setCsvStatus({ kind: "success", message: "保存データを読み込みました。" });
+    setStorageMessage("保存データを読み込みました。");
+  };
+
+  const deleteSavedProject = () => {
+    deleteRosterProject();
+    setHasSavedData(false);
+    setStorageMessage("保存データを削除しました。");
   };
 
   return (
@@ -63,9 +132,14 @@ export default function App() {
         students={students}
         version={APP_VERSION}
         csvStatus={csvStatus}
+        storageMessage={storageMessage}
+        hasSavedData={hasSavedData}
         onCsvImport={importStudents}
         onCsvError={(message) => setCsvStatus({ kind: "error", message })}
         onResetSample={resetSampleStudents}
+        onSaveProject={saveCurrentProject}
+        onLoadProject={loadSavedProject}
+        onDeleteProject={deleteSavedProject}
         onSettingsChange={setSettings}
         onToggleStudent={toggleStudent}
         onPrint={() => window.print()}
