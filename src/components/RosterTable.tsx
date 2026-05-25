@@ -10,7 +10,7 @@ interface RosterTableProps {
 function NameDisplay({ student, showKana }: { student: Student; showKana: boolean }) {
   if (student.fullName && !student.firstName) {
     return (
-      <span className="full-name-text">
+      <span className={`full-name-text ${showKana ? "name-with-kana" : "name-without-kana"}`}>
         {showKana && student.fullKana ? (
           <ruby>
             {student.fullName}
@@ -25,7 +25,7 @@ function NameDisplay({ student, showKana }: { student: Student; showKana: boolea
 
   if (!showKana) {
     return (
-      <span className="full-name-text">
+      <span className="full-name-text name-without-kana">
         <span>{student.lastName}</span>
         <span>{student.firstName}</span>
       </span>
@@ -33,7 +33,7 @@ function NameDisplay({ student, showKana }: { student: Student; showKana: boolea
   }
 
   return (
-    <span className="full-name-text with-kana">
+    <span className="full-name-text name-with-kana">
       <ruby>
         {student.lastName}
         <rt>{student.lastKana}</rt>
@@ -60,22 +60,25 @@ function TableBlock({
   const isTwoColumn = settings.layout.columns === 2;
   const hasManyChecks = settings.layout.checkColumnCount >= 10;
   const nameColumnWidth = isTwoColumn
-    ? Math.min(settings.layout.nameColumnWidth, 92)
+    ? Math.min(settings.layout.nameColumnWidth, 84)
     : hasManyChecks
-      ? Math.min(settings.layout.nameColumnWidth, 112)
+      ? Math.min(settings.layout.nameColumnWidth, 102)
       : settings.layout.nameColumnWidth;
   const checkColumnWidth = isTwoColumn && hasManyChecks
-    ? Math.min(settings.layout.checkColumnMinWidth, 14)
+    ? Math.min(settings.layout.checkColumnMinWidth, 13)
     : hasManyChecks
-      ? Math.min(settings.layout.checkColumnMinWidth, 18)
+      ? Math.min(settings.layout.checkColumnMinWidth, 16)
       : settings.layout.checkColumnMinWidth;
+  const baseNameFontSize = settings.layout.showKana
+    ? settings.layout.nameFontSize
+    : settings.layout.nameFontSizeNoKana;
   const nameFontSize = isTwoColumn && hasManyChecks
-    ? Math.min(settings.layout.nameFontSize, 13.25)
+    ? Math.min(baseNameFontSize, settings.layout.showKana ? 14 : 15.25)
     : isTwoColumn || hasManyChecks
-      ? Math.min(settings.layout.nameFontSize, 13.75)
-      : settings.layout.nameFontSize;
+      ? Math.min(baseNameFontSize, settings.layout.showKana ? 14.5 : 15.75)
+      : baseNameFontSize;
   const tableStyle = {
-    "--number-column-width": `${isTwoColumn ? Math.min(settings.layout.numberColumnWidth, 32) : settings.layout.numberColumnWidth}px`,
+    "--number-column-width": `${isTwoColumn ? Math.min(settings.layout.numberColumnWidth, 28) : settings.layout.numberColumnWidth}px`,
     "--name-column-width": `${nameColumnWidth}px`,
     "--check-column-min-width": `${checkColumnWidth}px`,
     "--name-font-size": `${nameFontSize}px`
