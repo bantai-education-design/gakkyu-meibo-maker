@@ -636,17 +636,19 @@ select {
   border-collapse: collapse;
   table-layout: fixed;
   font-size: 9.5pt;
-  --number-column-width: 30px;
-  --name-column-width: 110px;
+  --number-column-width: 28px;
+  --name-column-width: 98px;
   --check-column-min-width: 20px;
-  --name-font-size: 15.5px;
+  --check-column-width: auto;
+  --name-font-size: 16.25px;
 }
 
 .roster-table th,
 .roster-table td {
   border: 1px solid #1f2937;
   height: var(--row-height);
-  padding: 1mm 1mm;
+  box-sizing: border-box;
+  padding: 1mm 0.8mm;
   vertical-align: middle;
   overflow: hidden;
 }
@@ -658,14 +660,18 @@ select {
 }
 
 .number-col {
+  min-width: 0;
   width: var(--number-column-width);
+  max-width: var(--number-column-width);
   text-align: center;
-  padding-inline: 0.5mm;
+  padding-inline: 0.25mm;
 }
 
 .name-col {
-  width: var(--name-column-width);
   min-width: 0;
+  width: var(--name-column-width);
+  max-width: var(--name-column-width);
+  padding-inline: 0.5mm;
 }
 
 .group-col {
@@ -724,8 +730,10 @@ select {
 }
 
 .check-col {
-  width: var(--check-column-min-width);
+  min-width: 0;
+  width: var(--check-column-width);
   text-align: center;
+  padding-inline: 0.25mm;
 }
 
 .note-col {
@@ -735,12 +743,12 @@ select {
 .full-name-text {
   display: inline-flex;
   align-items: baseline;
-  gap: 1.8mm;
+  gap: 1.4mm;
   max-width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
   font-size: var(--name-font-size);
-  font-weight: 700;
+  font-weight: 750;
   word-break: normal;
   line-height: 1.18;
 }
@@ -770,7 +778,7 @@ select {
 
 .columns-2 .roster-table th,
 .columns-2 .roster-table td {
-  padding-inline: 0.8mm;
+  padding-inline: 0.45mm;
 }
 
 ruby {

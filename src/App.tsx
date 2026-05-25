@@ -43,11 +43,11 @@ const initialSettings: RosterSettings = {
     paperSize: "A4",
     orientation: "portrait",
     splitGenderColumns: true,
-    numberColumnWidth: 30,
-    nameColumnWidth: 110,
+    numberColumnWidth: 28,
+    nameColumnWidth: 98,
     checkColumnMinWidth: 20,
-    nameFontSize: 15.5,
-    nameFontSizeNoKana: 17
+    nameFontSize: 16.25,
+    nameFontSizeNoKana: 18.5
   }
 };
 

@@ -67,4 +67,22 @@
   .roster-table th {
     background: #edf5f5 !important;
   }
+
+  .roster-table {
+    table-layout: fixed !important;
+  }
+
+  .number-col {
+    width: var(--number-column-width) !important;
+    max-width: var(--number-column-width) !important;
+  }
+
+  .name-col {
+    width: var(--name-column-width) !important;
+    max-width: var(--name-column-width) !important;
+  }
+
+  .check-col {
+    width: var(--check-column-width) !important;
+  }
 }

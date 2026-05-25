@@ -59,10 +59,13 @@ function TableBlock({
   const visibleColumns = settings.visibleColumns;
   const isTwoColumn = settings.layout.columns === 2;
   const hasManyChecks = settings.layout.checkColumnCount >= 10;
+  const numberColumnWidth = isTwoColumn
+    ? Math.min(settings.layout.numberColumnWidth, 26)
+    : settings.layout.numberColumnWidth;
   const nameColumnWidth = isTwoColumn
-    ? Math.min(settings.layout.nameColumnWidth, 84)
+    ? Math.min(settings.layout.nameColumnWidth, 82)
     : hasManyChecks
-      ? Math.min(settings.layout.nameColumnWidth, 102)
+      ? Math.min(settings.layout.nameColumnWidth, 94)
       : settings.layout.nameColumnWidth;
   const checkColumnWidth = isTwoColumn && hasManyChecks
     ? Math.min(settings.layout.checkColumnMinWidth, 13)
@@ -73,31 +76,51 @@ function TableBlock({
     ? settings.layout.nameFontSize
     : settings.layout.nameFontSizeNoKana;
   const nameFontSize = isTwoColumn && hasManyChecks
-    ? Math.min(baseNameFontSize, settings.layout.showKana ? 14 : 15.25)
+    ? Math.min(baseNameFontSize, settings.layout.showKana ? 14.5 : 16)
     : isTwoColumn || hasManyChecks
-      ? Math.min(baseNameFontSize, settings.layout.showKana ? 14.5 : 15.75)
+      ? Math.min(baseNameFontSize, settings.layout.showKana ? 15 : 16.5)
       : baseNameFontSize;
+  const genderColumnWidth = 38;
+  const birthdayColumnWidth = 82;
+  const groupColumnWidth = 40;
+  const noteColumnWidth = 80;
+  const fixedColumnsWidth =
+    numberColumnWidth +
+    nameColumnWidth +
+    (visibleColumns.gender ? genderColumnWidth : 0) +
+    (visibleColumns.birthday ? birthdayColumnWidth : 0) +
+    (visibleColumns.group ? groupColumnWidth : 0) +
+    (visibleColumns.note ? noteColumnWidth : 0);
+  const fixedColumnStyle = (width: number) => ({ width: `${width}px` }) as CSSProperties;
+  const checkColumnStyle = {
+    width: checks.length > 0
+      ? `max(${checkColumnWidth}px, calc((100% - ${fixedColumnsWidth}px) / ${checks.length}))`
+      : `${checkColumnWidth}px`
+  } as CSSProperties;
   const tableStyle = {
-    "--number-column-width": `${isTwoColumn ? Math.min(settings.layout.numberColumnWidth, 28) : settings.layout.numberColumnWidth}px`,
+    "--number-column-width": `${numberColumnWidth}px`,
     "--name-column-width": `${nameColumnWidth}px`,
     "--check-column-min-width": `${checkColumnWidth}px`,
+    "--check-column-width": checks.length > 0
+      ? `max(${checkColumnWidth}px, calc((100% - ${fixedColumnsWidth}px) / ${checks.length}))`
+      : `${checkColumnWidth}px`,
     "--name-font-size": `${nameFontSize}px`
   } as CSSProperties;
 
   return (
     <div className="table-block">
       {heading ? <div className="block-heading">{heading}</div> : null}
-      <table className="roster-table" style={tableStyle}>
+      <table className={`roster-table ${checks.length > 0 ? "has-checks" : "no-checks"}`} style={tableStyle}>
         <colgroup>
-          <col className="number-col" />
-          <col className="name-col" />
-          {visibleColumns.gender ? <col className="gender-col" /> : null}
-          {visibleColumns.birthday ? <col className="birthday-col" /> : null}
-          {visibleColumns.group ? <col className="group-col" /> : null}
+          <col className="number-col" style={fixedColumnStyle(numberColumnWidth)} />
+          <col className="name-col" style={fixedColumnStyle(nameColumnWidth)} />
+          {visibleColumns.gender ? <col className="gender-col" style={fixedColumnStyle(genderColumnWidth)} /> : null}
+          {visibleColumns.birthday ? <col className="birthday-col" style={fixedColumnStyle(birthdayColumnWidth)} /> : null}
+          {visibleColumns.group ? <col className="group-col" style={fixedColumnStyle(groupColumnWidth)} /> : null}
           {checks.map((check) => (
-            <col className="check-col" key={`check-col-${check}`} />
+            <col className="check-col" style={checkColumnStyle} key={`check-col-${check}`} />
           ))}
-          {visibleColumns.note ? <col className="note-col" /> : null}
+          {visibleColumns.note ? <col className="note-col" style={fixedColumnStyle(noteColumnWidth)} /> : null}
         </colgroup>
         <thead>
           <tr>
