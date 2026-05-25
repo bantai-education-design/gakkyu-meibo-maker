@@ -1,7 +1,8 @@
-import type { RosterSettings, Student } from "../types";
+import type { RosterSettings, Student, TemplateType } from "../types";
 import { CsvImportPanel, type CsvImportStatus } from "./CsvImportPanel";
 import { StoragePanel } from "./StoragePanel";
 import { StudentVisibilityList } from "./StudentVisibilityList";
+import { TemplatePanel } from "./TemplatePanel";
 
 interface ControlPanelProps {
   settings: RosterSettings;
@@ -18,6 +19,7 @@ interface ControlPanelProps {
   onDeleteProject: () => void;
   onExportJson: () => void;
   onImportJson: (file: File) => void;
+  onApplyTemplate: (templateType: TemplateType) => void;
   onSettingsChange: (settings: RosterSettings) => void;
   onToggleStudent: (id: string) => void;
   onPrint: () => void;
@@ -38,6 +40,7 @@ export function ControlPanel({
   onDeleteProject,
   onExportJson,
   onImportJson,
+  onApplyTemplate,
   onSettingsChange,
   onToggleStudent,
   onPrint
@@ -89,6 +92,11 @@ export function ControlPanel({
         onImportJson={onImportJson}
       />
 
+      <TemplatePanel
+        selectedTemplate={settings.templateType}
+        onApplyTemplate={onApplyTemplate}
+      />
+
       <section className="panel-section">
         <h2>基本</h2>
         <label className="field">
@@ -124,8 +132,64 @@ export function ControlPanel({
             <option value="gender">男女別順</option>
             <option value="kana">五十音順</option>
             <option value="birthday">生年月日順</option>
+            <option value="group">班・グループ順</option>
           </select>
         </label>
+
+        <div className="column-toggle-grid">
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={settings.visibleColumns.gender}
+              onChange={(event) =>
+                onSettingsChange({
+                  ...settings,
+                  visibleColumns: { ...settings.visibleColumns, gender: event.target.checked }
+                })
+              }
+            />
+            <span>性別を表示</span>
+          </label>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={settings.visibleColumns.birthday}
+              onChange={(event) =>
+                onSettingsChange({
+                  ...settings,
+                  visibleColumns: { ...settings.visibleColumns, birthday: event.target.checked }
+                })
+              }
+            />
+            <span>生年月日を表示</span>
+          </label>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={settings.visibleColumns.group}
+              onChange={(event) =>
+                onSettingsChange({
+                  ...settings,
+                  visibleColumns: { ...settings.visibleColumns, group: event.target.checked }
+                })
+              }
+            />
+            <span>班・グループを表示</span>
+          </label>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={settings.visibleColumns.note}
+              onChange={(event) =>
+                onSettingsChange({
+                  ...settings,
+                  visibleColumns: { ...settings.visibleColumns, note: event.target.checked }
+                })
+              }
+            />
+            <span>備考を表示</span>
+          </label>
+        </div>
       </section>
 
       <section className="panel-section">

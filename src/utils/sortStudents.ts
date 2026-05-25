@@ -26,6 +26,10 @@ export function sortStudents(students: Student[], sortMode: SortMode): Student[]
       return a.birthday.localeCompare(b.birthday) || a.number - b.number;
     }
 
+    if (sortMode === "group") {
+      return a.group.localeCompare(b.group, "ja", { numeric: true }) || a.number - b.number;
+    }
+
     return a.number - b.number;
   });
 }

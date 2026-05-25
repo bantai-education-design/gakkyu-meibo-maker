@@ -3,7 +3,7 @@ import { ControlPanel } from "./components/ControlPanel";
 import type { CsvImportStatus } from "./components/CsvImportPanel";
 import { PreviewArea } from "./components/PreviewArea";
 import { sampleStudents } from "./data/sampleStudents";
-import type { RosterSettings, Student } from "./types";
+import type { RosterSettings, Student, TemplateType } from "./types";
 import { sortStudents } from "./utils/sortStudents";
 import {
   deleteRosterProject,
@@ -12,13 +12,21 @@ import {
   saveRosterProject
 } from "./utils/storage";
 import { exportProjectAsJson, importProjectFromJsonFile } from "./utils/fileStorage";
+import { applyTemplate } from "./utils/templates";
 import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
+  templateType: "submission",
   title: "提出物チェック表",
   teacherName: "担任　山田",
   showTeacherName: true,
   sortMode: "number",
+  visibleColumns: {
+    gender: false,
+    birthday: false,
+    note: true,
+    group: false
+  },
   layout: {
     columns: 1,
     checkColumnCount: 5,
@@ -32,12 +40,25 @@ const initialSettings: RosterSettings = {
   }
 };
 
+function normalizeSettings(settings: RosterSettings): RosterSettings {
+  return {
+    ...initialSettings,
+    ...settings,
+    templateType: settings.templateType ?? initialSettings.templateType,
+    visibleColumns: settings.visibleColumns ?? initialSettings.visibleColumns,
+    layout: {
+      ...initialSettings.layout,
+      ...settings.layout
+    }
+  };
+}
+
 function loadInitialState() {
   const saved = loadRosterProject();
   if (saved) {
     return {
       students: saved.students,
-      settings: saved.settings,
+      settings: normalizeSettings(saved.settings),
       message: "保存データを読み込みました。"
     };
   }
@@ -115,7 +136,7 @@ export default function App() {
     }
 
     setStudents(saved.students);
-    setSettings(saved.settings);
+    setSettings(normalizeSettings(saved.settings));
     setCsvStatus({ kind: "success", message: "保存データを読み込みました。" });
     setStorageMessage("保存データを読み込みました。");
   };
@@ -135,13 +156,18 @@ export default function App() {
     try {
       const project = await importProjectFromJsonFile(file);
       setStudents(project.students);
-      setSettings(project.settings);
+      setSettings(normalizeSettings(project.settings));
       setCsvStatus({ kind: "success", message: "JSONファイルを読み込みました。" });
       setStorageMessage("JSONファイルを読み込みました。");
     } catch (error) {
       const message = error instanceof Error ? error.message : "JSONファイルの読み込みに失敗しました。";
       setStorageMessage(message);
     }
+  };
+
+  const applyRosterTemplate = (templateType: TemplateType) => {
+    setSettings((current) => applyTemplate(current, templateType));
+    setStorageMessage("用途テンプレートを反映しました。");
   };
 
   return (
@@ -161,6 +187,7 @@ export default function App() {
         onDeleteProject={deleteSavedProject}
         onExportJson={exportJsonProject}
         onImportJson={importJsonProject}
+        onApplyTemplate={applyRosterTemplate}
         onSettingsChange={setSettings}
         onToggleStudent={toggleStudent}
         onPrint={() => window.print()}

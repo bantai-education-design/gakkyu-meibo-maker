@@ -109,6 +109,21 @@ select {
   line-height: 1.65;
 }
 
+.template-description {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.column-toggle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 10px;
+  margin-top: 10px;
+}
+
 .file-field {
   display: grid;
   gap: 8px;
@@ -639,6 +654,16 @@ select {
 
 .group-col {
   width: 12mm;
+  text-align: center;
+}
+
+.gender-col {
+  width: 11mm;
+  text-align: center;
+}
+
+.birthday-col {
+  width: 24mm;
   text-align: center;
 }
 

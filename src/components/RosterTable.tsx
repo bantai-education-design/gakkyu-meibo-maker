@@ -55,6 +55,7 @@ function TableBlock({
   heading?: string;
 }) {
   const checks = Array.from({ length: settings.layout.checkColumnCount }, (_, index) => index + 1);
+  const visibleColumns = settings.visibleColumns;
 
   return (
     <div className="table-block">
@@ -64,11 +65,13 @@ function TableBlock({
           <tr>
             <th className="number-col">番号</th>
             <th className="name-col">氏名</th>
-            <th className="group-col">班</th>
+            {visibleColumns.gender ? <th className="gender-col">性別</th> : null}
+            {visibleColumns.birthday ? <th className="birthday-col">生年月日</th> : null}
+            {visibleColumns.group ? <th className="group-col">班</th> : null}
             {checks.map((check) => (
               <th className="check-col" key={check}>{check}</th>
             ))}
-            <th className="note-col">備考</th>
+            {visibleColumns.note ? <th className="note-col">備考</th> : null}
           </tr>
         </thead>
         <tbody>
@@ -78,11 +81,13 @@ function TableBlock({
               <td className="name-col">
                 <NameDisplay student={student} showKana={settings.layout.showKana} />
               </td>
-              <td className="group-col">{student.group}</td>
+              {visibleColumns.gender ? <td className="gender-col">{student.gender}</td> : null}
+              {visibleColumns.birthday ? <td className="birthday-col">{student.birthday}</td> : null}
+              {visibleColumns.group ? <td className="group-col">{student.group}</td> : null}
               {checks.map((check) => (
                 <td className="check-col" key={`${student.id}-${check}`} />
               ))}
-              <td className="note-col">{student.note}</td>
+              {visibleColumns.note ? <td className="note-col">{student.note}</td> : null}
             </tr>
           ))}
         </tbody>
