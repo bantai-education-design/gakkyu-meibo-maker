@@ -13,6 +13,11 @@ import {
 } from "./utils/storage";
 import { exportProjectAsJson, importProjectFromJsonFile } from "./utils/fileStorage";
 import { applyTemplate } from "./utils/templates";
+import {
+  moveStudentInCustomOrder,
+  normalizeCustomOrder,
+  orderStudentsByCustomOrder
+} from "./utils/customOrder";
 import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
@@ -21,6 +26,7 @@ const initialSettings: RosterSettings = {
   teacherName: "担任　山田",
   showTeacherName: true,
   sortMode: "number",
+  customOrder: sampleStudents.map((student) => student.id),
   visibleColumns: {
     gender: false,
     birthday: false,
@@ -45,6 +51,7 @@ function normalizeSettings(settings: RosterSettings): RosterSettings {
     ...initialSettings,
     ...settings,
     templateType: settings.templateType ?? initialSettings.templateType,
+    customOrder: settings.customOrder ?? initialSettings.customOrder,
     visibleColumns: settings.visibleColumns ?? initialSettings.visibleColumns,
     layout: {
       ...initialSettings.layout,
@@ -58,7 +65,13 @@ function loadInitialState() {
   if (saved) {
     return {
       students: saved.students,
-      settings: normalizeSettings(saved.settings),
+      settings: {
+        ...normalizeSettings(saved.settings),
+        customOrder: normalizeCustomOrder(
+          saved.students,
+          saved.settings.customOrder ?? saved.customOrder
+        )
+      },
       message: "保存データを読み込みました。"
     };
   }
@@ -98,8 +111,16 @@ export default function App() {
   }, [students, settings]);
 
   const sortedStudents = useMemo(
-    () => sortStudents(students, settings.sortMode),
-    [students, settings.sortMode]
+    () => sortStudents(students, settings.sortMode, settings.customOrder),
+    [students, settings.sortMode, settings.customOrder]
+  );
+
+  const listedStudents = useMemo(
+    () =>
+      settings.sortMode === "custom"
+        ? orderStudentsByCustomOrder(students, settings.customOrder)
+        : students,
+    [students, settings.sortMode, settings.customOrder]
   );
 
   const toggleStudent = (id: string) => {
@@ -110,8 +131,26 @@ export default function App() {
     );
   };
 
+  const updateStudentGroup = (id: string, group: string) => {
+    setStudents((current) =>
+      current.map((student) => (student.id === id ? { ...student, group } : student))
+    );
+  };
+
+  const moveStudent = (id: string, direction: "up" | "down") => {
+    setSettings((current) => ({
+      ...current,
+      sortMode: "custom",
+      customOrder: moveStudentInCustomOrder(students, current.customOrder, id, direction)
+    }));
+  };
+
   const importStudents = (nextStudents: Student[], message: string) => {
     setStudents(nextStudents);
+    setSettings((current) => ({
+      ...current,
+      customOrder: nextStudents.map((student) => student.id)
+    }));
     setCsvStatus({ kind: "success", message });
   };
 
@@ -136,7 +175,10 @@ export default function App() {
     }
 
     setStudents(saved.students);
-    setSettings(normalizeSettings(saved.settings));
+    setSettings({
+      ...normalizeSettings(saved.settings),
+      customOrder: normalizeCustomOrder(saved.students, saved.settings.customOrder ?? saved.customOrder)
+    });
     setCsvStatus({ kind: "success", message: "保存データを読み込みました。" });
     setStorageMessage("保存データを読み込みました。");
   };
@@ -156,7 +198,13 @@ export default function App() {
     try {
       const project = await importProjectFromJsonFile(file);
       setStudents(project.students);
-      setSettings(normalizeSettings(project.settings));
+      setSettings({
+        ...normalizeSettings(project.settings),
+        customOrder: normalizeCustomOrder(
+          project.students,
+          project.settings.customOrder ?? project.customOrder
+        )
+      });
       setCsvStatus({ kind: "success", message: "JSONファイルを読み込みました。" });
       setStorageMessage("JSONファイルを読み込みました。");
     } catch (error) {
@@ -174,7 +222,7 @@ export default function App() {
     <div className="app-shell">
       <ControlPanel
         settings={settings}
-        students={students}
+        listedStudents={listedStudents}
         version={APP_VERSION}
         csvStatus={csvStatus}
         storageMessage={storageMessage}
@@ -190,6 +238,8 @@ export default function App() {
         onApplyTemplate={applyRosterTemplate}
         onSettingsChange={setSettings}
         onToggleStudent={toggleStudent}
+        onMoveStudent={moveStudent}
+        onGroupChange={updateStudentGroup}
         onPrint={() => window.print()}
       />
       <PreviewArea students={sortedStudents} settings={settings} />

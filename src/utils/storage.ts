@@ -11,6 +11,7 @@ export function createSavedRosterProject(
     savedAt: new Date().toISOString(),
     students,
     settings,
+    customOrder: settings.customOrder,
     templates: []
   };
 }

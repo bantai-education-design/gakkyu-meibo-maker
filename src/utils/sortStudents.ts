@@ -1,4 +1,5 @@
 import type { SortMode, Student } from "../types";
+import { orderStudentsByCustomOrder } from "./customOrder";
 
 const genderOrder = new Map([
   ["男", 1],
@@ -6,8 +7,12 @@ const genderOrder = new Map([
   ["その他", 3]
 ]);
 
-export function sortStudents(students: Student[], sortMode: SortMode): Student[] {
+export function sortStudents(students: Student[], sortMode: SortMode, customOrder: string[] = []): Student[] {
   const visibleStudents = students.filter((student) => student.visible);
+
+  if (sortMode === "custom") {
+    return orderStudentsByCustomOrder(visibleStudents, customOrder);
+  }
 
   return [...visibleStudents].sort((a, b) => {
     if (sortMode === "gender") {

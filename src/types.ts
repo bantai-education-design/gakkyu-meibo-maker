@@ -1,6 +1,6 @@
 export type Gender = "男" | "女" | "その他";
 
-export type SortMode = "number" | "gender" | "kana" | "birthday" | "group";
+export type SortMode = "number" | "gender" | "kana" | "birthday" | "group" | "custom";
 
 export type FontMode = "gothic" | "mincho";
 
@@ -58,6 +58,7 @@ export interface RosterSettings {
   teacherName: string;
   showTeacherName: boolean;
   sortMode: SortMode;
+  customOrder: string[];
   visibleColumns: VisibleColumns;
   layout: LayoutSettings;
 }
@@ -73,5 +74,6 @@ export interface SavedRosterProject {
   savedAt: string;
   students: Student[];
   settings: RosterSettings;
+  customOrder: string[];
   templates?: RosterTemplate[];
 }

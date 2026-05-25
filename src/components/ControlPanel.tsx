@@ -6,7 +6,7 @@ import { TemplatePanel } from "./TemplatePanel";
 
 interface ControlPanelProps {
   settings: RosterSettings;
-  students: Student[];
+  listedStudents: Student[];
   version: string;
   csvStatus: CsvImportStatus;
   storageMessage: string;
@@ -22,12 +22,14 @@ interface ControlPanelProps {
   onApplyTemplate: (templateType: TemplateType) => void;
   onSettingsChange: (settings: RosterSettings) => void;
   onToggleStudent: (id: string) => void;
+  onMoveStudent: (id: string, direction: "up" | "down") => void;
+  onGroupChange: (id: string, group: string) => void;
   onPrint: () => void;
 }
 
 export function ControlPanel({
   settings,
-  students,
+  listedStudents,
   version,
   csvStatus,
   storageMessage,
@@ -43,6 +45,8 @@ export function ControlPanel({
   onApplyTemplate,
   onSettingsChange,
   onToggleStudent,
+  onMoveStudent,
+  onGroupChange,
   onPrint
 }: ControlPanelProps) {
   const update = <K extends keyof RosterSettings>(key: K, value: RosterSettings[K]) => {
@@ -133,6 +137,7 @@ export function ControlPanel({
             <option value="kana">五十音順</option>
             <option value="birthday">生年月日順</option>
             <option value="group">班・グループ順</option>
+            <option value="custom">任意順</option>
           </select>
         </label>
 
@@ -304,7 +309,13 @@ export function ControlPanel({
 
       <section className="panel-section">
         <h2>表示する児童</h2>
-        <StudentVisibilityList students={students} onToggle={onToggleStudent} />
+        <StudentVisibilityList
+          students={listedStudents}
+          isCustomOrder={settings.sortMode === "custom"}
+          onToggle={onToggleStudent}
+          onMove={onMoveStudent}
+          onGroupChange={onGroupChange}
+        />
       </section>
     </aside>
   );
