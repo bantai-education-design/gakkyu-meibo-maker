@@ -174,6 +174,127 @@ select {
   background: #f8fafc;
 }
 
+.mapping-panel {
+  margin-top: 12px;
+  border: 1px solid #dbe7e8;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.mapping-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mapping-title-row h3 {
+  margin: 0;
+  color: #0f3f46;
+  font-size: 14px;
+}
+
+.small-button {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  padding: 6px 9px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mapping-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mapping-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.mapping-header {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mapping-row select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 9px 10px;
+  color: #172033;
+}
+
+.mapping-warning,
+.mapping-error {
+  margin: 10px 0 0;
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.mapping-warning {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.mapping-error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.mapping-preview {
+  max-height: 190px;
+  margin-top: 12px;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.mapping-preview table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.mapping-preview th,
+.mapping-preview td {
+  min-width: 96px;
+  border: 1px solid #e2e8f0;
+  padding: 7px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.mapping-preview th {
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 800;
+}
+
+.mapping-confirm {
+  margin-top: 12px;
+  box-shadow: none;
+}
+
+.mapping-confirm:disabled {
+  cursor: not-allowed;
+  background: #94a3b8;
+}
+
 .panel-section {
   margin-top: 18px;
   padding: 16px;
