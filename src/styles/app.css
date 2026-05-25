@@ -742,14 +742,17 @@ select {
 
 .full-name-text {
   display: inline-flex;
+  flex-wrap: nowrap;
   align-items: baseline;
-  gap: 1.4mm;
+  gap: 1mm;
   max-width: 100%;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  overflow-wrap: normal;
   font-size: var(--name-font-size);
   font-weight: 750;
-  word-break: normal;
+  word-break: keep-all;
+  white-space: nowrap;
   line-height: 1.18;
 }
 
@@ -761,15 +764,52 @@ select {
   line-height: 1.2;
 }
 
-.name-col .full-name-text {
-  white-space: normal;
+.name-length-short {
+  letter-spacing: 0.02em;
 }
 
-.name-col ruby,
-.name-col .full-name-text > span {
+.name-length-5 {
+  gap: 0.25mm;
+  font-size: var(--name-font-size-5);
+  letter-spacing: 0;
+}
+
+.name-length-6 {
+  gap: 0;
+  font-size: var(--name-font-size-6);
+  letter-spacing: -0.04em;
+}
+
+.name-length-long {
+  gap: 0;
+  font-size: var(--name-font-size-long);
+  letter-spacing: -0.055em;
+}
+
+.name-col .full-name-text {
+  white-space: nowrap;
+}
+
+.name-part {
+  display: inline-block;
+  max-width: 100%;
   min-width: 0;
-  overflow-wrap: anywhere;
-  white-space: normal;
+  overflow: visible;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.name-col .name-part {
+  flex: 0 1 auto;
+  white-space: nowrap;
+}
+
+.name-col .name-part:only-child {
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
 .columns-2 .roster-table {
@@ -783,7 +823,6 @@ select {
 
 ruby {
   ruby-align: center;
-  white-space: nowrap;
 }
 
 rt {

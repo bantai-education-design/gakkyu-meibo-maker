@@ -7,17 +7,29 @@ interface RosterTableProps {
   settings: RosterSettings;
 }
 
+function getNameLengthClass(student: Student): string {
+  const rawName = student.fullName || `${student.lastName}${student.firstName}`;
+  const length = Array.from(rawName.replace(/\s/g, "")).length;
+  if (length >= 7) return "name-length-long";
+  if (length === 6) return "name-length-6";
+  if (length === 5) return "name-length-5";
+  return "name-length-short";
+}
+
 function NameDisplay({ student, showKana }: { student: Student; showKana: boolean }) {
+  const lengthClass = getNameLengthClass(student);
+  const spacingClass = showKana ? "name-with-kana" : "name-without-kana";
+
   if (student.fullName && !student.firstName) {
     return (
-      <span className={`full-name-text ${showKana ? "name-with-kana" : "name-without-kana"}`}>
+      <span className={`full-name-text ${spacingClass} ${lengthClass}`}>
         {showKana && student.fullKana ? (
-          <ruby>
+          <ruby className="name-part">
             {student.fullName}
             <rt>{student.fullKana}</rt>
           </ruby>
         ) : (
-          <span>{student.fullName}</span>
+          <span className="name-part">{student.fullName}</span>
         )}
       </span>
     );
@@ -25,20 +37,20 @@ function NameDisplay({ student, showKana }: { student: Student; showKana: boolea
 
   if (!showKana) {
     return (
-      <span className="full-name-text name-without-kana">
-        <span>{student.lastName}</span>
-        <span>{student.firstName}</span>
+      <span className={`full-name-text name-without-kana ${lengthClass}`}>
+        <span className="name-part">{student.lastName}</span>
+        <span className="name-part">{student.firstName}</span>
       </span>
     );
   }
 
   return (
-    <span className="full-name-text name-with-kana">
-      <ruby>
+    <span className={`full-name-text name-with-kana ${lengthClass}`}>
+      <ruby className="name-part">
         {student.lastName}
         <rt>{student.lastKana}</rt>
       </ruby>
-      <ruby>
+      <ruby className="name-part">
         {student.firstName}
         <rt>{student.firstKana}</rt>
       </ruby>
@@ -104,7 +116,10 @@ function TableBlock({
     "--check-column-width": checks.length > 0
       ? `max(${checkColumnWidth}px, calc((100% - ${fixedColumnsWidth}px) / ${checks.length}))`
       : `${checkColumnWidth}px`,
-    "--name-font-size": `${nameFontSize}px`
+    "--name-font-size": `${nameFontSize}px`,
+    "--name-font-size-5": `${Math.min(nameFontSize, settings.layout.showKana ? 15.2 : 16.5)}px`,
+    "--name-font-size-6": `${Math.min(nameFontSize, settings.layout.showKana ? 14.4 : 15.5)}px`,
+    "--name-font-size-long": `${Math.min(nameFontSize, settings.layout.showKana ? 13.4 : 14)}px`
   } as CSSProperties;
 
   return (
