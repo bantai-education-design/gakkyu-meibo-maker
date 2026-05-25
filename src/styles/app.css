@@ -743,7 +743,7 @@ select {
 .full-name-text {
   display: inline-flex;
   flex-wrap: nowrap;
-  align-items: baseline;
+  align-items: flex-end;
   gap: 1mm;
   max-width: 100%;
   min-width: 0;
@@ -761,7 +761,8 @@ select {
 }
 
 .name-with-kana {
-  line-height: 1.2;
+  align-items: flex-end;
+  line-height: 1.05;
 }
 
 .name-length-short {
@@ -800,6 +801,14 @@ select {
   word-break: keep-all;
 }
 
+ruby.name-part {
+  display: inline-ruby;
+  ruby-align: center;
+  ruby-position: over;
+  line-height: 1.05;
+  vertical-align: baseline;
+}
+
 .name-col .name-part {
   flex: 0 1 auto;
   white-space: nowrap;
@@ -827,9 +836,11 @@ ruby {
 
 rt {
   color: #334155;
-  font-size: 5.8pt;
+  font-size: 5.4pt;
   font-weight: 500;
   letter-spacing: 0;
+  line-height: 1;
+  text-align: center;
 }
 
 @media (max-width: 760px) {

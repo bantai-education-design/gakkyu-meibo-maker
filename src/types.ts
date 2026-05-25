@@ -59,6 +59,7 @@ export interface LayoutSettings {
 
 export interface RosterSettings {
   templateType: TemplateType;
+  classLabel: string;
   title: string;
   teacherName: string;
   showTeacherName: boolean;

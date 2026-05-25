@@ -109,6 +109,15 @@ export function ControlPanel({
         </label>
 
         <label className="field">
+          <span>所属</span>
+          <input
+            value={settings.classLabel}
+            onChange={(event) => update("classLabel", event.target.value)}
+            placeholder="例：1年1組"
+          />
+        </label>
+
+        <label className="field">
           <span>担任名</span>
           <input
             value={settings.teacherName}

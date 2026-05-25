@@ -7,7 +7,14 @@ interface PreviewAreaProps {
   settings: RosterSettings;
 }
 
+function createDisplayTitle(settings: RosterSettings): string {
+  const classLabel = settings.classLabel.trim();
+  return classLabel ? `${classLabel} ${settings.title}` : settings.title;
+}
+
 export function PreviewArea({ students, settings }: PreviewAreaProps) {
+  const displayTitle = createDisplayTitle(settings);
+
   return (
     <main className="preview-wrap">
       <style>{getPageRule(settings.layout)}</style>
@@ -18,7 +25,7 @@ export function PreviewArea({ students, settings }: PreviewAreaProps) {
       <section className="paper preview-paper" style={createPreviewStyle(settings.layout)}>
         <header className="paper-header">
           <div>
-            <h2>{settings.title}</h2>
+            <h2>{displayTitle}</h2>
             {settings.showTeacherName ? <p>{settings.teacherName}</p> : null}
           </div>
           <span className="paper-date">　年　月　日</span>

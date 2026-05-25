@@ -22,6 +22,7 @@ import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
   templateType: "submission",
+  classLabel: "",
   title: "提出物チェック表",
   teacherName: "担任　山田",
   showTeacherName: true,
@@ -56,6 +57,7 @@ function normalizeSettings(settings: RosterSettings): RosterSettings {
     ...initialSettings,
     ...settings,
     templateType: settings.templateType ?? initialSettings.templateType,
+    classLabel: settings.classLabel ?? initialSettings.classLabel,
     customOrder: settings.customOrder ?? initialSettings.customOrder,
     visibleColumns: settings.visibleColumns ?? initialSettings.visibleColumns,
     layout: {

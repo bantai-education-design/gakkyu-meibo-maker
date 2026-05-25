@@ -85,4 +85,14 @@
   .check-col {
     width: var(--check-column-width) !important;
   }
+
+  ruby.name-part {
+    ruby-align: center;
+    ruby-position: over;
+  }
+
+  rt {
+    letter-spacing: 0;
+    line-height: 1;
+  }
 }
