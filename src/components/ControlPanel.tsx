@@ -44,6 +44,10 @@ export function ControlPanel({
         印刷する
       </button>
 
+      <div className="print-guidance">
+        きれいに印刷するには、印刷画面で「ヘッダーとフッター」をOFF、「背景のグラフィック」をONにしてください。余白は「なし」または「最小」がおすすめです。
+      </div>
+
       <section className="panel-section">
         <h2>基本</h2>
         <label className="field">

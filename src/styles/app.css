@@ -97,6 +97,18 @@ select {
   background: #0b6b64;
 }
 
+.print-guidance {
+  margin-top: 12px;
+  border: 1px solid #cfe2e2;
+  border-radius: 8px;
+  background: #f0f8f7;
+  color: #31565b;
+  padding: 11px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
 .panel-section {
   margin-top: 18px;
   padding: 16px;

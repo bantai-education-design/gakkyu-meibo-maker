@@ -1,11 +1,17 @@
 @media print {
+  html,
   :root,
   body {
     background: #ffffff !important;
   }
 
+  html,
   body {
+    width: auto;
+    height: auto;
     min-width: 0;
+    margin: 0;
+    overflow: visible !important;
   }
 
   .control-panel,
@@ -15,23 +21,37 @@
 
   .app-shell {
     display: block;
+    width: auto;
+    height: auto;
     min-height: auto;
+    overflow: visible !important;
   }
 
   .preview-wrap {
     display: block;
+    width: 100%;
     height: auto;
-    overflow: visible;
-    padding: 0;
-    background: #ffffff !important;
-  }
-
-  .paper {
-    width: auto;
-    min-height: auto;
+    min-height: 0;
     margin: 0;
     padding: 0;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  .paper,
+  .preview-paper {
+    display: block;
+    width: 100% !important;
+    max-width: none;
+    min-height: 0;
+    margin: 0 auto;
+    padding: 0 !important;
+    background: #ffffff !important;
     box-shadow: none !important;
+  }
+
+  .roster-columns {
+    width: 100%;
   }
 
   .paper-header {
