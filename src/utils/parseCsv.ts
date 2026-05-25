@@ -1,5 +1,7 @@
 import type { Gender, Student } from "../types";
 
+export type CsvEncoding = "utf-8" | "shift_jis";
+
 export interface CsvImportSuccess {
   ok: true;
   students: Student[];
@@ -29,6 +31,15 @@ const supportedHeaders = [
   "班",
   "グループ"
 ];
+
+export function decodeCsvBuffer(buffer: ArrayBuffer, encoding: CsvEncoding): string {
+  const decoder = new TextDecoder(encoding, { fatal: false });
+  return decoder.decode(buffer);
+}
+
+export function hasPossibleMojibake(text: string): boolean {
+  return /�|縺|繧|繝|譁|蜷|逕|螂|莠|蛻/.test(text);
+}
 
 export function parseStudentCsv(csvText: string): CsvImportResult {
   const rows = parseCsvRows(removeBom(csvText));
