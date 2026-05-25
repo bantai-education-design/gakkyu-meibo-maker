@@ -6,14 +6,27 @@ interface RosterTableProps {
   settings: RosterSettings;
 }
 
-function NamePart({ name, kana, showKana }: { name: string; kana: string; showKana: boolean }) {
-  if (!showKana) return <span>{name}</span>;
+function NameDisplay({ student, showKana }: { student: Student; showKana: boolean }) {
+  if (!showKana) {
+    return (
+      <span className="full-name-text">
+        <span>{student.lastName}</span>
+        <span>{student.firstName}</span>
+      </span>
+    );
+  }
 
   return (
-    <ruby>
-      {name}
-      <rt>{kana}</rt>
-    </ruby>
+    <span className="full-name-text with-kana">
+      <ruby>
+        {student.lastName}
+        <rt>{student.lastKana}</rt>
+      </ruby>
+      <ruby>
+        {student.firstName}
+        <rt>{student.firstKana}</rt>
+      </ruby>
+    </span>
   );
 }
 
@@ -35,7 +48,7 @@ function TableBlock({
         <thead>
           <tr>
             <th className="number-col">番号</th>
-            <th className="name-col" colSpan={2}>氏名</th>
+            <th className="name-col">氏名</th>
             <th className="group-col">班</th>
             {checks.map((check) => (
               <th className="check-col" key={check}>{check}</th>
@@ -47,11 +60,8 @@ function TableBlock({
           {students.map((student) => (
             <tr key={student.id}>
               <td className="number-col">{student.number}</td>
-              <td className="last-name-col">
-                <NamePart name={student.lastName} kana={student.lastKana} showKana={settings.layout.showKana} />
-              </td>
-              <td className="first-name-col">
-                <NamePart name={student.firstName} kana={student.firstKana} showKana={settings.layout.showKana} />
+              <td className="name-col">
+                <NameDisplay student={student} showKana={settings.layout.showKana} />
               </td>
               <td className="group-col">{student.group}</td>
               {checks.map((check) => (
