@@ -1,3 +1,5 @@
+import type { ChangeEvent } from "react";
+
 interface StoragePanelProps {
   message: string;
   hasSavedData: boolean;
@@ -5,6 +7,8 @@ interface StoragePanelProps {
   onLoad: () => void;
   onResetSample: () => void;
   onDelete: () => void;
+  onExportJson: () => void;
+  onImportJson: (file: File) => void;
 }
 
 export function StoragePanel({
@@ -13,11 +17,22 @@ export function StoragePanel({
   onSave,
   onLoad,
   onResetSample,
-  onDelete
+  onDelete,
+  onExportJson,
+  onImportJson
 }: StoragePanelProps) {
+  const handleJsonFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (file) onImportJson(file);
+  };
+
   return (
     <section className="panel-section">
       <h2>保存</h2>
+      <p className="privacy-note">
+        実名の名簿データを扱う場合は、保存ファイルの取り扱いにご注意ください。共有PCでは使用後に保存データを削除してください。
+      </p>
       <div className="storage-actions">
         <button className="secondary-button" type="button" onClick={onSave}>
           現在の状態を保存
@@ -25,6 +40,13 @@ export function StoragePanel({
         <button className="secondary-button" type="button" onClick={onLoad} disabled={!hasSavedData}>
           保存データを読み込み
         </button>
+        <button className="secondary-button" type="button" onClick={onExportJson}>
+          JSONファイルとして保存
+        </button>
+        <label className="json-import-button">
+          JSONファイルを読み込む
+          <input type="file" accept=".json,application/json" onChange={handleJsonFileChange} />
+        </label>
         <button className="secondary-button" type="button" onClick={onResetSample}>
           サンプル名簿に戻す
         </button>

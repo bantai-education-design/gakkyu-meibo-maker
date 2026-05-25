@@ -26,9 +26,7 @@ export function loadRosterProject(): SavedRosterProject | null {
   if (!raw) return null;
 
   try {
-    const parsed = JSON.parse(raw) as SavedRosterProject;
-    if (!Array.isArray(parsed.students) || !parsed.settings) return null;
-    return parsed;
+    return parseSavedRosterProject(raw);
   } catch {
     return null;
   }
@@ -40,4 +38,26 @@ export function deleteRosterProject(): void {
 
 export function hasSavedRosterProject(): boolean {
   return localStorage.getItem(STORAGE_KEY) !== null;
+}
+
+export function parseSavedRosterProject(raw: string): SavedRosterProject | null {
+  try {
+    const parsed = JSON.parse(raw) as SavedRosterProject;
+    if (!isSavedRosterProject(parsed)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+export function isSavedRosterProject(value: unknown): value is SavedRosterProject {
+  if (!value || typeof value !== "object") return false;
+  const project = value as Partial<SavedRosterProject>;
+  return (
+    typeof project.version === "string" &&
+    typeof project.savedAt === "string" &&
+    Array.isArray(project.students) &&
+    !!project.settings &&
+    typeof project.settings === "object"
+  );
 }

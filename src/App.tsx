@@ -11,6 +11,7 @@ import {
   loadRosterProject,
   saveRosterProject
 } from "./utils/storage";
+import { exportProjectAsJson, importProjectFromJsonFile } from "./utils/fileStorage";
 import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
@@ -125,6 +126,24 @@ export default function App() {
     setStorageMessage("保存データを削除しました。");
   };
 
+  const exportJsonProject = () => {
+    exportProjectAsJson(students, settings);
+    setStorageMessage("JSONファイルとして保存しました。");
+  };
+
+  const importJsonProject = async (file: File) => {
+    try {
+      const project = await importProjectFromJsonFile(file);
+      setStudents(project.students);
+      setSettings(project.settings);
+      setCsvStatus({ kind: "success", message: "JSONファイルを読み込みました。" });
+      setStorageMessage("JSONファイルを読み込みました。");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "JSONファイルの読み込みに失敗しました。";
+      setStorageMessage(message);
+    }
+  };
+
   return (
     <div className="app-shell">
       <ControlPanel
@@ -140,6 +159,8 @@ export default function App() {
         onSaveProject={saveCurrentProject}
         onLoadProject={loadSavedProject}
         onDeleteProject={deleteSavedProject}
+        onExportJson={exportJsonProject}
+        onImportJson={importJsonProject}
         onSettingsChange={setSettings}
         onToggleStudent={toggleStudent}
         onPrint={() => window.print()}

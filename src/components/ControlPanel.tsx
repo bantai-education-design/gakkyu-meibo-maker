@@ -16,6 +16,8 @@ interface ControlPanelProps {
   onSaveProject: () => void;
   onLoadProject: () => void;
   onDeleteProject: () => void;
+  onExportJson: () => void;
+  onImportJson: (file: File) => void;
   onSettingsChange: (settings: RosterSettings) => void;
   onToggleStudent: (id: string) => void;
   onPrint: () => void;
@@ -34,6 +36,8 @@ export function ControlPanel({
   onSaveProject,
   onLoadProject,
   onDeleteProject,
+  onExportJson,
+  onImportJson,
   onSettingsChange,
   onToggleStudent,
   onPrint
@@ -81,6 +85,8 @@ export function ControlPanel({
         onLoad={onLoadProject}
         onResetSample={onResetSample}
         onDelete={onDeleteProject}
+        onExportJson={onExportJson}
+        onImportJson={onImportJson}
       />
 
       <section className="panel-section">
