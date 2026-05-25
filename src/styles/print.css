@@ -1,0 +1,50 @@
+@media print {
+  :root,
+  body {
+    background: #ffffff !important;
+  }
+
+  body {
+    min-width: 0;
+  }
+
+  .control-panel,
+  .preview-toolbar {
+    display: none !important;
+  }
+
+  .app-shell {
+    display: block;
+    min-height: auto;
+  }
+
+  .preview-wrap {
+    display: block;
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    background: #ffffff !important;
+  }
+
+  .paper {
+    width: auto;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+  }
+
+  .paper-header {
+    break-after: avoid;
+  }
+
+  .table-block,
+  .roster-table,
+  tr {
+    break-inside: avoid;
+  }
+
+  .roster-table th {
+    background: #edf5f5 !important;
+  }
+}
