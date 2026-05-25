@@ -50,6 +50,9 @@ export interface LayoutSettings {
   paperSize: PaperSize;
   orientation: Orientation;
   splitGenderColumns: boolean;
+  numberColumnWidth: number;
+  nameColumnWidth: number;
+  checkColumnMinWidth: number;
 }
 
 export interface RosterSettings {

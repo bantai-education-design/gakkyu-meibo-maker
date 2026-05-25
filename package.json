@@ -1,6 +1,6 @@
 {
   "name": "class-roster-maker",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "description": "学校現場向けの学級名簿・提出物チェック表印刷アプリ",
   "type": "module",

@@ -636,6 +636,9 @@ select {
   border-collapse: collapse;
   table-layout: fixed;
   font-size: 9.5pt;
+  --number-column-width: 36px;
+  --name-column-width: 128px;
+  --check-column-min-width: 22px;
 }
 
 .roster-table th,
@@ -654,12 +657,12 @@ select {
 }
 
 .number-col {
-  width: 10mm;
+  width: var(--number-column-width);
   text-align: center;
 }
 
 .name-col {
-  width: 42mm;
+  width: var(--name-column-width);
   min-width: 0;
 }
 
@@ -719,7 +722,7 @@ select {
 }
 
 .check-col {
-  width: 8mm;
+  width: var(--check-column-min-width);
   text-align: center;
 }
 
@@ -730,12 +733,32 @@ select {
 .full-name-text {
   display: inline-flex;
   align-items: baseline;
-  gap: 2.8mm;
+  gap: 2.2mm;
   max-width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
-  word-break: keep-all;
+  word-break: normal;
   line-height: 1.2;
+}
+
+.name-col .full-name-text {
+  white-space: normal;
+}
+
+.name-col ruby,
+.name-col .full-name-text > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.columns-2 .roster-table {
+  font-size: 9pt;
+}
+
+.columns-2 .roster-table th,
+.columns-2 .roster-table td {
+  padding-inline: 0.8mm;
 }
 
 ruby {
