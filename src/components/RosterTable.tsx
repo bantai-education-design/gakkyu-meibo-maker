@@ -69,10 +69,16 @@ function TableBlock({
     : hasManyChecks
       ? Math.min(settings.layout.checkColumnMinWidth, 18)
       : settings.layout.checkColumnMinWidth;
+  const nameFontSize = isTwoColumn && hasManyChecks
+    ? Math.min(settings.layout.nameFontSize, 13.25)
+    : isTwoColumn || hasManyChecks
+      ? Math.min(settings.layout.nameFontSize, 13.75)
+      : settings.layout.nameFontSize;
   const tableStyle = {
     "--number-column-width": `${isTwoColumn ? Math.min(settings.layout.numberColumnWidth, 32) : settings.layout.numberColumnWidth}px`,
     "--name-column-width": `${nameColumnWidth}px`,
-    "--check-column-min-width": `${checkColumnWidth}px`
+    "--check-column-min-width": `${checkColumnWidth}px`,
+    "--name-font-size": `${nameFontSize}px`
   } as CSSProperties;
 
   return (

@@ -45,7 +45,8 @@ const initialSettings: RosterSettings = {
     splitGenderColumns: true,
     numberColumnWidth: 36,
     nameColumnWidth: 128,
-    checkColumnMinWidth: 22
+    checkColumnMinWidth: 22,
+    nameFontSize: 14.5
   }
 };
 

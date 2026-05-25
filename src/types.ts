@@ -53,6 +53,7 @@ export interface LayoutSettings {
   numberColumnWidth: number;
   nameColumnWidth: number;
   checkColumnMinWidth: number;
+  nameFontSize: number;
 }
 
 export interface RosterSettings {

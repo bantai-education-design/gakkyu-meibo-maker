@@ -639,6 +639,7 @@ select {
   --number-column-width: 36px;
   --name-column-width: 128px;
   --check-column-min-width: 22px;
+  --name-font-size: 14.5px;
 }
 
 .roster-table th,
@@ -737,8 +738,10 @@ select {
   max-width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
+  font-size: var(--name-font-size);
+  font-weight: 700;
   word-break: normal;
-  line-height: 1.2;
+  line-height: 1.18;
 }
 
 .name-col .full-name-text {
@@ -769,6 +772,7 @@ ruby {
 rt {
   color: #334155;
   font-size: 5.8pt;
+  font-weight: 500;
   letter-spacing: 0;
 }
 
