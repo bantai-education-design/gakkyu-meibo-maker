@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ControlPanel } from "./components/ControlPanel";
+import type { CsvImportStatus } from "./components/CsvImportPanel";
 import { PreviewArea } from "./components/PreviewArea";
 import { sampleStudents } from "./data/sampleStudents";
 import type { RosterSettings, Student } from "./types";
@@ -27,6 +28,10 @@ const initialSettings: RosterSettings = {
 export default function App() {
   const [students, setStudents] = useState<Student[]>(sampleStudents);
   const [settings, setSettings] = useState<RosterSettings>(initialSettings);
+  const [csvStatus, setCsvStatus] = useState<CsvImportStatus>({
+    kind: "idle",
+    message: "サンプル名簿を表示しています。"
+  });
 
   const sortedStudents = useMemo(
     () => sortStudents(students, settings.sortMode),
@@ -41,12 +46,26 @@ export default function App() {
     );
   };
 
+  const importStudents = (nextStudents: Student[], message: string) => {
+    setStudents(nextStudents);
+    setCsvStatus({ kind: "success", message });
+  };
+
+  const resetSampleStudents = () => {
+    setStudents(sampleStudents);
+    setCsvStatus({ kind: "idle", message: "サンプル名簿に戻しました。" });
+  };
+
   return (
     <div className="app-shell">
       <ControlPanel
         settings={settings}
         students={students}
         version={APP_VERSION}
+        csvStatus={csvStatus}
+        onCsvImport={importStudents}
+        onCsvError={(message) => setCsvStatus({ kind: "error", message })}
+        onResetSample={resetSampleStudents}
         onSettingsChange={setSettings}
         onToggleStudent={toggleStudent}
         onPrint={() => window.print()}

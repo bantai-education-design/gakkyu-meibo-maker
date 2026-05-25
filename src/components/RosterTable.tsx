@@ -7,6 +7,21 @@ interface RosterTableProps {
 }
 
 function NameDisplay({ student, showKana }: { student: Student; showKana: boolean }) {
+  if (student.fullName && !student.firstName) {
+    return (
+      <span className="full-name-text">
+        {showKana && student.fullKana ? (
+          <ruby>
+            {student.fullName}
+            <rt>{student.fullKana}</rt>
+          </ruby>
+        ) : (
+          <span>{student.fullName}</span>
+        )}
+      </span>
+    );
+  }
+
   if (!showKana) {
     return (
       <span className="full-name-text">

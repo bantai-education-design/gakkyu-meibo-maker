@@ -109,6 +109,71 @@ select {
   line-height: 1.65;
 }
 
+.file-field {
+  display: grid;
+  gap: 8px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.file-field input {
+  width: 100%;
+  border: 1px dashed #9fb8bd;
+  border-radius: 8px;
+  background: #f8fbfb;
+  padding: 10px;
+  color: #172033;
+  cursor: pointer;
+}
+
+.csv-help {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.csv-status {
+  margin-top: 10px;
+  border-radius: 8px;
+  padding: 10px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.csv-status.idle {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.csv-status.success {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.csv-status.error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.secondary-button {
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.secondary-button:hover {
+  background: #f8fafc;
+}
+
 .panel-section {
   margin-top: 18px;
   padding: 16px;

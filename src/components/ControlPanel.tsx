@@ -1,10 +1,15 @@
 import type { RosterSettings, Student } from "../types";
+import { CsvImportPanel, type CsvImportStatus } from "./CsvImportPanel";
 import { StudentVisibilityList } from "./StudentVisibilityList";
 
 interface ControlPanelProps {
   settings: RosterSettings;
   students: Student[];
   version: string;
+  csvStatus: CsvImportStatus;
+  onCsvImport: (students: Student[], message: string) => void;
+  onCsvError: (message: string) => void;
+  onResetSample: () => void;
   onSettingsChange: (settings: RosterSettings) => void;
   onToggleStudent: (id: string) => void;
   onPrint: () => void;
@@ -14,6 +19,10 @@ export function ControlPanel({
   settings,
   students,
   version,
+  csvStatus,
+  onCsvImport,
+  onCsvError,
+  onResetSample,
   onSettingsChange,
   onToggleStudent,
   onPrint
@@ -47,6 +56,13 @@ export function ControlPanel({
       <div className="print-guidance">
         きれいに印刷するには、印刷画面で「ヘッダーとフッター」をOFF、「背景のグラフィック」をONにしてください。余白は「なし」または「最小」がおすすめです。
       </div>
+
+      <CsvImportPanel
+        status={csvStatus}
+        onImport={onCsvImport}
+        onError={onCsvError}
+        onResetSample={onResetSample}
+      />
 
       <section className="panel-section">
         <h2>基本</h2>

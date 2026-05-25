@@ -11,8 +11,10 @@ export type Orientation = "portrait" | "landscape";
 export interface Student {
   id: string;
   number: number;
+  fullName?: string;
   lastName: string;
   firstName: string;
+  fullKana?: string;
   lastKana: string;
   firstKana: string;
   gender: Gender;

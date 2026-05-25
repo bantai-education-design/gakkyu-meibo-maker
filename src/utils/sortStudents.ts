@@ -17,8 +17,8 @@ export function sortStudents(students: Student[], sortMode: SortMode): Student[]
     }
 
     if (sortMode === "kana") {
-      const kanaA = `${a.lastKana}${a.firstKana}`;
-      const kanaB = `${b.lastKana}${b.firstKana}`;
+      const kanaA = a.fullKana || `${a.lastKana}${a.firstKana}`;
+      const kanaB = b.fullKana || `${b.lastKana}${b.firstKana}`;
       return kanaA.localeCompare(kanaB, "ja") || a.number - b.number;
     }
 

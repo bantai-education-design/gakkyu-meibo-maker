@@ -17,7 +17,7 @@ export function StudentVisibilityList({ students, onToggle }: StudentVisibilityL
           />
           <span className="student-number">{student.number}</span>
           <span className="student-label">
-            {student.lastName} {student.firstName}
+            {student.fullName || `${student.lastName} ${student.firstName}`.trim()}
           </span>
           <span className={`gender-chip gender-${student.gender}`}>{student.gender}</span>
         </label>
