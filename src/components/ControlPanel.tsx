@@ -1,4 +1,5 @@
 import type { RosterSettings, Student, TemplateType } from "../types";
+import { AppLogo } from "./AppLogo";
 import { CsvImportPanel, type CsvImportStatus } from "./CsvImportPanel";
 import { StoragePanel } from "./StoragePanel";
 import { StudentVisibilityList } from "./StudentVisibilityList";
@@ -64,11 +65,7 @@ export function ControlPanel({
   return (
     <aside className="control-panel">
       <div className="app-title">
-        <span className="app-mark">名</span>
-        <div>
-          <h1>学級名簿メーカー</h1>
-          <p>画面で整えて、そのまま印刷</p>
-        </div>
+        <AppLogo />
         <span className="version-badge">v{version}</span>
       </div>
 

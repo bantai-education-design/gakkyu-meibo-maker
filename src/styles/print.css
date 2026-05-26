@@ -58,6 +58,15 @@
     break-after: avoid;
   }
 
+  .paper-brand {
+    margin-top: 4mm;
+    break-inside: avoid;
+  }
+
+  .app-logo-paper {
+    opacity: 0.55;
+  }
+
   .table-block,
   .roster-table,
   tr {

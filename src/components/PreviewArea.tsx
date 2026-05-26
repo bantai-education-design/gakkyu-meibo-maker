@@ -1,5 +1,6 @@
 import type { RosterSettings, Student } from "../types";
 import { createPreviewStyle, getPageRule } from "../utils/layoutUtils";
+import { AppLogo } from "./AppLogo";
 import { RosterTable } from "./RosterTable";
 
 interface PreviewAreaProps {
@@ -31,6 +32,9 @@ export function PreviewArea({ students, settings }: PreviewAreaProps) {
           <span className="paper-date">　年　月　日</span>
         </header>
         <RosterTable students={students} settings={settings} />
+        <div className="paper-brand">
+          <AppLogo variant="paper" showTagline={false} />
+        </div>
       </section>
     </main>
   );

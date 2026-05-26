@@ -43,7 +43,7 @@ select {
 .app-title {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 18px;
 }
 
@@ -58,27 +58,61 @@ select {
   font-weight: 800;
 }
 
-.app-mark {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: #155e75;
-  color: #ffffff;
+.app-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-logo-mark {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+}
+
+.app-logo-mark rect {
+  fill: #0f766e;
+}
+
+.app-logo-mark path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.68);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.app-logo-mark circle {
+  fill: #d7f4ee;
+}
+
+.app-logo-mark text {
+  fill: #ffffff;
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: 15px;
   font-weight: 800;
 }
 
-.app-title h1 {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.25;
+.app-logo-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
 }
 
-.app-title p {
-  margin: 3px 0 0;
+.app-logo-name {
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.app-logo-tagline {
   color: #64748b;
   font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 
 .print-button {
@@ -617,6 +651,29 @@ select {
 .paper-date {
   flex: 0 0 auto;
   font-size: 10pt;
+}
+
+.paper-brand {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4mm;
+  color: #64748b;
+}
+
+.app-logo-paper {
+  gap: 1.5mm;
+  opacity: 0.58;
+}
+
+.app-logo-paper .app-logo-mark {
+  width: 7mm;
+  height: 7mm;
+}
+
+.app-logo-paper .app-logo-name {
+  color: #334155;
+  font-size: 8pt;
+  font-weight: 800;
 }
 
 .roster-columns {
