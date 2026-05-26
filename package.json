@@ -1,13 +1,34 @@
 {
   "name": "class-roster-maker",
-  "version": "0.5.13",
+  "version": "0.6.0",
   "private": true,
   "description": "学校現場向けの学級名簿・提出物チェック表印刷アプリ",
   "type": "module",
+  "main": "dist-electron/main.cjs",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
+    "electron:compile": "esbuild electron/main.ts electron/preload.ts --bundle --platform=node --format=cjs --outdir=dist-electron --out-extension:.js=.cjs --external:electron",
+    "electron:dev": "npm run electron:compile && concurrently -k \"vite --host 127.0.0.1 --port 5176\" \"wait-on http://127.0.0.1:5176 && electron --remote-debugging-port=9227 dist-electron/main.cjs\"",
+    "electron:build": "npm run build && npm run electron:compile && electron-builder --win --dir",
     "preview": "vite preview --host 127.0.0.1"
+  },
+  "build": {
+    "appId": "jp.bantai-education-design.class-roster-maker",
+    "productName": "学級名簿メーカー",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",
@@ -17,7 +38,13 @@
     "vite": "^7.0.0"
   },
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "concurrently": "^9.2.1",
+    "electron": "^42.2.0",
+    "electron-builder": "^26.8.1",
+    "esbuild": "^0.28.0",
+    "wait-on": "^9.0.10"
   }
 }

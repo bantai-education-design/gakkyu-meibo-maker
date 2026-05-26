@@ -1,5 +1,13 @@
 # 変更履歴
 
+## v0.6.0 - 2026-05-26
+
+- Electron用の `electron/main.ts` と `electron/preload.ts` を追加
+- `npm run electron:dev` でVite開発サーバーを読み込むElectronウィンドウを起動できるように変更
+- build後に `dist/index.html` を読み込めるElectron単体化準備を追加
+- `electron:compile` と `electron:build` を追加し、Windows版exe/installer化に向けた構成に整理
+- nodeIntegrationをfalse、contextIsolationをtrueにし、最小限のpreload APIに抑えた安全設定に調整
+
 ## v0.5.13 - 2026-05-26
 
 - 貼り付け取り込みで「現在の名簿に追加する」「現在の名簿を置き換える」を選べるようにした
