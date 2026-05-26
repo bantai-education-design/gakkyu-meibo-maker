@@ -38,6 +38,15 @@ function joinNameParts(name: { full?: string; last: string; first: string }): st
   return name.full || `${name.last}${name.first}`;
 }
 
+function KanaNameUnit({ main, kana }: { main: string; kana?: string }) {
+  return (
+    <span className={kana ? "name-unit" : "name-unit name-unit-main-only"}>
+      {kana ? <span className="name-kana">{kana}</span> : null}
+      <span className="name-main">{main}</span>
+    </span>
+  );
+}
+
 function NameDisplay({ student, mode }: { student: Student; mode: NameDisplayMode }) {
   const kanjiName = getKanjiName(student);
   const kanaName = getKanaName(student);
@@ -61,16 +70,17 @@ function NameDisplay({ student, mode }: { student: Student; mode: NameDisplayMod
   }
 
   if (displayName.full) {
+    if (mode === "kanjiWithKana" && kanaName.full) {
+      return (
+        <span className={`full-name-text name-with-kana name-kana-layout ${lengthClass}`}>
+          <KanaNameUnit main={displayName.full} kana={kanaName.full} />
+        </span>
+      );
+    }
+
     return (
       <span className={`full-name-text ${spacingClass} ${lengthClass}`}>
-        {mode === "kanjiWithKana" && kanaName.full ? (
-          <ruby className="name-part">
-            {displayName.full}
-            <rt>{kanaName.full}</rt>
-          </ruby>
-        ) : (
-          <span className="name-part">{displayName.full}</span>
-        )}
+        <span className="name-part">{displayName.full}</span>
       </span>
     );
   }
@@ -85,23 +95,9 @@ function NameDisplay({ student, mode }: { student: Student; mode: NameDisplayMod
   }
 
   return (
-    <span className={`full-name-text name-with-kana ${lengthClass}`}>
-      {student.lastKana ? (
-        <ruby className="name-part">
-          {displayName.last}
-          <rt>{student.lastKana}</rt>
-        </ruby>
-      ) : (
-        <span className="name-part">{displayName.last}</span>
-      )}
-      {student.firstKana ? (
-        <ruby className="name-part">
-          {displayName.first}
-          <rt>{student.firstKana}</rt>
-        </ruby>
-      ) : (
-        <span className="name-part">{displayName.first}</span>
-      )}
+    <span className={`full-name-text name-with-kana name-kana-layout ${lengthClass}`}>
+      <KanaNameUnit main={displayName.last} kana={student.lastKana} />
+      <KanaNameUnit main={displayName.first} kana={student.firstKana} />
     </span>
   );
 }

@@ -91,6 +91,28 @@
     ruby-position: over;
   }
 
+  .name-unit {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .name-kana {
+    letter-spacing: 0;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .name-main {
+    letter-spacing: inherit;
+    line-height: 1.08;
+    white-space: nowrap;
+  }
+
   rt {
     letter-spacing: 0;
     line-height: 1;

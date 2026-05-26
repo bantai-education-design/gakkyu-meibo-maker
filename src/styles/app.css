@@ -780,6 +780,10 @@ select {
   line-height: 1.05;
 }
 
+.name-kana-layout {
+  align-items: flex-end;
+}
+
 .name-length-short {
   letter-spacing: 0.02em;
 }
@@ -822,6 +826,59 @@ ruby.name-part {
   ruby-position: over;
   line-height: 1.05;
   vertical-align: baseline;
+}
+
+.name-unit {
+  display: inline-flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: max-content;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: keep-all;
+  line-height: 1;
+}
+
+.name-unit-main-only {
+  justify-content: flex-end;
+}
+
+.name-kana {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #334155;
+  font-size: 5.3pt;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+  text-align: center;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.name-main {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: 1.08;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.name-kana-layout.name-length-6 .name-kana {
+  font-size: 5pt;
+}
+
+.name-kana-layout.name-length-long .name-kana {
+  font-size: 4.8pt;
 }
 
 .name-col .name-part {
