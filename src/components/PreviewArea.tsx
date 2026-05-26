@@ -10,7 +10,8 @@ interface PreviewAreaProps {
 
 function createDisplayTitle(settings: RosterSettings): string {
   const classLabel = settings.classLabel.trim();
-  return classLabel ? `${classLabel} ${settings.title}` : settings.title;
+  const title = settings.title.trim();
+  return classLabel ? `${classLabel} ${title}` : title;
 }
 
 export function PreviewArea({ students, settings }: PreviewAreaProps) {

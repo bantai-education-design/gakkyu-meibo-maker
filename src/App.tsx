@@ -24,7 +24,7 @@ import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
   templateType: "submission",
-  classLabel: "",
+  classLabel: "1年1組",
   title: "提出物チェック表",
   teacherName: "担任　山田",
   showTeacherName: true,

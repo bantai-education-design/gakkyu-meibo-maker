@@ -142,6 +142,7 @@ export function ControlPanel({
             onChange={(event) => update("classLabel", event.target.value)}
             placeholder="例：1年1組"
           />
+          <small>タイトルの先頭に表示されます。</small>
         </label>
 
         <label className="field">
