@@ -20,7 +20,7 @@ export const rosterTemplates: RosterPurposeTemplate[] = [
       checkColumnCount: 0,
       showKana: true,
       sortMode: "number",
-      visibleColumns: { gender: false, birthday: false, note: false, group: true }
+      visibleColumns: { gender: false, birthday: false, note: false, group: false }
     }
   },
   {

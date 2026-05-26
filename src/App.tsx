@@ -61,7 +61,10 @@ function normalizeSettings(settings: RosterSettings): RosterSettings {
     classLabel: settings.classLabel ?? initialSettings.classLabel,
     nameDisplayMode: settings.nameDisplayMode ?? initialSettings.nameDisplayMode,
     customOrder: settings.customOrder ?? initialSettings.customOrder,
-    visibleColumns: settings.visibleColumns ?? initialSettings.visibleColumns,
+    visibleColumns: {
+      ...initialSettings.visibleColumns,
+      ...settings.visibleColumns
+    },
     layout: {
       ...initialSettings.layout,
       ...settings.layout
