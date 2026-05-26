@@ -8,6 +8,8 @@ export type PaperSize = "A4" | "A3" | "B4";
 
 export type Orientation = "portrait" | "landscape";
 
+export type NameDisplayMode = "kanjiWithKana" | "kanaOnly" | "kanjiOnly";
+
 export type TemplateType =
   | "standard"
   | "submission"
@@ -63,6 +65,7 @@ export interface RosterSettings {
   title: string;
   teacherName: string;
   showTeacherName: boolean;
+  nameDisplayMode: NameDisplayMode;
   sortMode: SortMode;
   customOrder: string[];
   visibleColumns: VisibleColumns;

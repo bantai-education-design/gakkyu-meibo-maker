@@ -117,6 +117,17 @@ select {
   line-height: 1.6;
 }
 
+.hint-text {
+  margin: -2px 0 0;
+  border-radius: 8px;
+  background: #fff7ed;
+  padding: 8px 10px;
+  color: #9a3412;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
 .column-toggle-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -757,6 +768,10 @@ select {
 }
 
 .name-without-kana {
+  line-height: 1.08;
+}
+
+.name-kana-only {
   line-height: 1.08;
 }
 

@@ -49,6 +49,7 @@ export function ControlPanel({
   onGroupChange,
   onPrint
 }: ControlPanelProps) {
+  const isFirstGradeClass = /(?:1|１|一)\s*(?:年|学年)/.test(settings.classLabel);
   const update = <K extends keyof RosterSettings>(key: K, value: RosterSettings[K]) => {
     onSettingsChange({ ...settings, [key]: value });
   };
@@ -116,6 +117,32 @@ export function ControlPanel({
             placeholder="例：1年1組"
           />
         </label>
+
+        <label className="field">
+          <span>氏名表記</span>
+          <select
+            value={settings.nameDisplayMode}
+            onChange={(event) => {
+              const nameDisplayMode = event.target.value as RosterSettings["nameDisplayMode"];
+              onSettingsChange({
+                ...settings,
+                nameDisplayMode,
+                layout: {
+                  ...settings.layout,
+                  showKana: nameDisplayMode === "kanjiWithKana"
+                }
+              });
+            }}
+          >
+            <option value="kanjiWithKana">漢字＋ふりがな</option>
+            <option value="kanaOnly">ひらがな</option>
+            <option value="kanjiOnly">漢字のみ</option>
+          </select>
+        </label>
+
+        {isFirstGradeClass ? (
+          <p className="hint-text">1年生用の名簿では、氏名表記を「ひらがな」にすると読みやすくなります。</p>
+        ) : null}
 
         <label className="field">
           <span>担任名</span>
@@ -249,8 +276,14 @@ export function ControlPanel({
         <label className="check-row">
           <input
             type="checkbox"
-            checked={settings.layout.showKana}
-            onChange={(event) => updateLayout("showKana", event.target.checked)}
+            checked={settings.nameDisplayMode === "kanjiWithKana"}
+            onChange={(event) =>
+              onSettingsChange({
+                ...settings,
+                nameDisplayMode: event.target.checked ? "kanjiWithKana" : "kanjiOnly",
+                layout: { ...settings.layout, showKana: event.target.checked }
+              })
+            }
           />
           <span>ふりがなを表示する</span>
         </label>

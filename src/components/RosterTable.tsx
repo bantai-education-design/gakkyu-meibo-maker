@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { RosterSettings, Student } from "../types";
+import type { NameDisplayMode, RosterSettings, Student } from "../types";
 import { groupForPreview } from "../utils/sortStudents";
 
 interface RosterTableProps {
@@ -7,53 +7,101 @@ interface RosterTableProps {
   settings: RosterSettings;
 }
 
-function getNameLengthClass(student: Student): string {
-  const rawName = student.fullName || `${student.lastName}${student.firstName}`;
-  const length = Array.from(rawName.replace(/\s/g, "")).length;
+function getNameLengthClass(value: string): string {
+  const length = Array.from(value.replace(/\s/g, "")).length;
   if (length >= 7) return "name-length-long";
   if (length === 6) return "name-length-6";
   if (length === 5) return "name-length-5";
   return "name-length-short";
 }
 
-function NameDisplay({ student, showKana }: { student: Student; showKana: boolean }) {
-  const lengthClass = getNameLengthClass(student);
-  const spacingClass = showKana ? "name-with-kana" : "name-without-kana";
+function getKanjiName(student: Student): { full?: string; last: string; first: string } {
+  return {
+    full: student.fullName && !student.firstName ? student.fullName : undefined,
+    last: student.lastName,
+    first: student.firstName
+  };
+}
 
-  if (student.fullName && !student.firstName) {
+function getKanaName(student: Student): { full?: string; last: string; first: string } {
+  if (student.fullKana) {
+    return { full: student.fullKana, last: "", first: "" };
+  }
+
+  return {
+    last: student.lastKana || student.lastName,
+    first: student.firstKana || student.firstName
+  };
+}
+
+function joinNameParts(name: { full?: string; last: string; first: string }): string {
+  return name.full || `${name.last}${name.first}`;
+}
+
+function NameDisplay({ student, mode }: { student: Student; mode: NameDisplayMode }) {
+  const kanjiName = getKanjiName(student);
+  const kanaName = getKanaName(student);
+  const displayName = mode === "kanaOnly" ? kanaName : kanjiName;
+  const lengthClass = getNameLengthClass(joinNameParts(displayName));
+  const spacingClass = mode === "kanjiWithKana" ? "name-with-kana" : "name-without-kana";
+
+  if (mode === "kanaOnly") {
     return (
-      <span className={`full-name-text ${spacingClass} ${lengthClass}`}>
-        {showKana && student.fullKana ? (
-          <ruby className="name-part">
-            {student.fullName}
-            <rt>{student.fullKana}</rt>
-          </ruby>
+      <span className={`full-name-text name-kana-only ${lengthClass}`}>
+        {displayName.full ? (
+          <span className="name-part">{displayName.full}</span>
         ) : (
-          <span className="name-part">{student.fullName}</span>
+          <>
+            <span className="name-part">{displayName.last}</span>
+            <span className="name-part">{displayName.first}</span>
+          </>
         )}
       </span>
     );
   }
 
-  if (!showKana) {
+  if (displayName.full) {
+    return (
+      <span className={`full-name-text ${spacingClass} ${lengthClass}`}>
+        {mode === "kanjiWithKana" && kanaName.full ? (
+          <ruby className="name-part">
+            {displayName.full}
+            <rt>{kanaName.full}</rt>
+          </ruby>
+        ) : (
+          <span className="name-part">{displayName.full}</span>
+        )}
+      </span>
+    );
+  }
+
+  if (mode === "kanjiOnly") {
     return (
       <span className={`full-name-text name-without-kana ${lengthClass}`}>
-        <span className="name-part">{student.lastName}</span>
-        <span className="name-part">{student.firstName}</span>
+        <span className="name-part">{displayName.last}</span>
+        <span className="name-part">{displayName.first}</span>
       </span>
     );
   }
 
   return (
     <span className={`full-name-text name-with-kana ${lengthClass}`}>
-      <ruby className="name-part">
-        {student.lastName}
-        <rt>{student.lastKana}</rt>
-      </ruby>
-      <ruby className="name-part">
-        {student.firstName}
-        <rt>{student.firstKana}</rt>
-      </ruby>
+      {student.lastKana ? (
+        <ruby className="name-part">
+          {displayName.last}
+          <rt>{student.lastKana}</rt>
+        </ruby>
+      ) : (
+        <span className="name-part">{displayName.last}</span>
+      )}
+      {student.firstKana ? (
+        <ruby className="name-part">
+          {displayName.first}
+          <rt>{student.firstKana}</rt>
+        </ruby>
+      ) : (
+        <span className="name-part">{displayName.first}</span>
+      )}
     </span>
   );
 }
@@ -84,13 +132,14 @@ function TableBlock({
     : hasManyChecks
       ? Math.min(settings.layout.checkColumnMinWidth, 16)
       : settings.layout.checkColumnMinWidth;
-  const baseNameFontSize = settings.layout.showKana
+  const hasRuby = settings.nameDisplayMode === "kanjiWithKana";
+  const baseNameFontSize = hasRuby
     ? settings.layout.nameFontSize
     : settings.layout.nameFontSizeNoKana;
   const nameFontSize = isTwoColumn && hasManyChecks
-    ? Math.min(baseNameFontSize, settings.layout.showKana ? 14.5 : 16)
+    ? Math.min(baseNameFontSize, hasRuby ? 14.5 : 16)
     : isTwoColumn || hasManyChecks
-      ? Math.min(baseNameFontSize, settings.layout.showKana ? 15 : 16.5)
+      ? Math.min(baseNameFontSize, hasRuby ? 15 : 16.5)
       : baseNameFontSize;
   const genderColumnWidth = 38;
   const birthdayColumnWidth = 82;
@@ -117,9 +166,9 @@ function TableBlock({
       ? `max(${checkColumnWidth}px, calc((100% - ${fixedColumnsWidth}px) / ${checks.length}))`
       : `${checkColumnWidth}px`,
     "--name-font-size": `${nameFontSize}px`,
-    "--name-font-size-5": `${Math.min(nameFontSize, settings.layout.showKana ? 15.2 : 16.5)}px`,
-    "--name-font-size-6": `${Math.min(nameFontSize, settings.layout.showKana ? 14.4 : 15.5)}px`,
-    "--name-font-size-long": `${Math.min(nameFontSize, settings.layout.showKana ? 13.4 : 14)}px`
+    "--name-font-size-5": `${Math.min(nameFontSize, hasRuby ? 15.2 : 16.5)}px`,
+    "--name-font-size-6": `${Math.min(nameFontSize, hasRuby ? 14.4 : 15.5)}px`,
+    "--name-font-size-long": `${Math.min(nameFontSize, hasRuby ? 13.4 : 14)}px`
   } as CSSProperties;
 
   return (
@@ -155,7 +204,7 @@ function TableBlock({
             <tr key={student.id}>
               <td className="number-col">{student.number}</td>
               <td className="name-col">
-                <NameDisplay student={student} showKana={settings.layout.showKana} />
+                <NameDisplay student={student} mode={settings.nameDisplayMode} />
               </td>
               {visibleColumns.gender ? <td className="gender-col">{student.gender}</td> : null}
               {visibleColumns.birthday ? <td className="birthday-col">{student.birthday}</td> : null}

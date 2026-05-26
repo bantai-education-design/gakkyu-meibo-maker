@@ -26,6 +26,7 @@ const initialSettings: RosterSettings = {
   title: "提出物チェック表",
   teacherName: "担任　山田",
   showTeacherName: true,
+  nameDisplayMode: "kanjiWithKana",
   sortMode: "number",
   customOrder: sampleStudents.map((student) => student.id),
   visibleColumns: {
@@ -58,6 +59,7 @@ function normalizeSettings(settings: RosterSettings): RosterSettings {
     ...settings,
     templateType: settings.templateType ?? initialSettings.templateType,
     classLabel: settings.classLabel ?? initialSettings.classLabel,
+    nameDisplayMode: settings.nameDisplayMode ?? initialSettings.nameDisplayMode,
     customOrder: settings.customOrder ?? initialSettings.customOrder,
     visibleColumns: settings.visibleColumns ?? initialSettings.visibleColumns,
     layout: {
