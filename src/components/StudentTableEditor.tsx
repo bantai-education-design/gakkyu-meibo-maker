@@ -1,4 +1,5 @@
 import type { Gender, Student } from "../types";
+import { getStudentIssues } from "../utils/studentValidation";
 
 interface StudentTableEditorProps {
   students: Student[];
@@ -55,8 +56,11 @@ export function StudentTableEditor({
             </tr>
           </thead>
           <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
+            {students.map((student) => {
+              const issues = getStudentIssues(student, students);
+
+              return (
+              <tr className={issues.length > 0 ? "student-row-has-issues" : ""} key={student.id}>
                 <td>
                   <input
                     type="checkbox"
@@ -108,6 +112,15 @@ export function StudentTableEditor({
                 </td>
                 <td>
                   <input value={student.note} onChange={(event) => onUpdateStudent(student.id, { note: event.target.value })} />
+                  {issues.length > 0 ? (
+                    <div className="student-issues">
+                      {issues.map((issue) => (
+                        <span className={`student-issue issue-${issue.type}`} key={issue.type}>
+                          {issue.label}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </td>
                 <td>
                   <button className="small-danger-button" type="button" onClick={() => onDeleteStudent(student.id)}>
@@ -115,7 +128,8 @@ export function StudentTableEditor({
                   </button>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

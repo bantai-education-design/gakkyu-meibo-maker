@@ -936,7 +936,7 @@ select {
 
 .data-editor-actions {
   display: grid;
-  grid-template-columns: repeat(4, max-content);
+  grid-template-columns: repeat(6, max-content);
   gap: 10px;
   align-items: center;
   margin-bottom: 14px;
@@ -990,6 +990,13 @@ select {
   margin-top: 10px;
 }
 
+.paste-mode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 8px;
+}
+
 .student-table-scroll {
   overflow: auto;
   max-height: calc(100vh - 390px);
@@ -1038,6 +1045,34 @@ select {
   border-color: #0f766e;
   background: #ffffff;
   outline: 2px solid rgba(15, 118, 110, 0.12);
+}
+
+.student-row-has-issues td {
+  background: #fffdf2;
+}
+
+.student-issues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.student-issue {
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.issue-duplicate-number,
+.issue-missing-number {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .student-editor-table th:first-child,

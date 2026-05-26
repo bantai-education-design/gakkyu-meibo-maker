@@ -19,6 +19,7 @@ import {
   normalizeCustomOrder,
   orderStudentsByCustomOrder
 } from "./utils/customOrder";
+import { isBlankStudentRow } from "./utils/studentValidation";
 import { APP_VERSION } from "./version";
 
 const initialSettings: RosterSettings = {
@@ -199,6 +200,28 @@ export default function App() {
     setStorageMessage("すべての児童データを削除しました。");
   };
 
+  const renumberStudents = () => {
+    setStudents((current) =>
+      current.map((student, index) => ({
+        ...student,
+        number: index + 1
+      }))
+    );
+    setStorageMessage("番号を振り直しました。");
+  };
+
+  const deleteBlankStudents = () => {
+    setStudents((current) => current.filter((student) => !isBlankStudentRow(student)));
+    setSettings((current) => ({
+      ...current,
+      customOrder: normalizeCustomOrder(
+        students.filter((student) => !isBlankStudentRow(student)),
+        current.customOrder
+      )
+    }));
+    setStorageMessage("空白行を削除しました。");
+  };
+
   const moveStudent = (id: string, direction: "up" | "down") => {
     setSettings((current) => ({
       ...current,
@@ -299,6 +322,8 @@ export default function App() {
         onDeleteStudent={deleteStudent}
         onDeleteSelected={deleteSelectedStudents}
         onClearStudents={clearStudents}
+        onRenumberStudents={renumberStudents}
+        onDeleteBlankStudents={deleteBlankStudents}
         onReplaceStudents={replaceStudents}
       />
     );

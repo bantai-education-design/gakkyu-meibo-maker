@@ -153,7 +153,8 @@ function parseNumber(value: string, fallback: number): number {
 }
 
 function normalizeGender(value: string): Gender {
-  if (value === "男" || value === "男子" || value.toLowerCase() === "m") return "男";
-  if (value === "女" || value === "女子" || value.toLowerCase() === "f") return "女";
+  const normalized = value.trim().toLowerCase();
+  if (value === "男" || value === "男子" || value === "男の子" || normalized === "m") return "男";
+  if (value === "女" || value === "女子" || value === "女の子" || normalized === "f") return "女";
   return "その他";
 }

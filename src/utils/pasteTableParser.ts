@@ -30,12 +30,21 @@ export function parsePastedStudentTable(text: string): CsvImportResult {
 export function mergeStudentsFromPaste(currentStudents: Student[], pastedStudents: Student[]): Student[] {
   const existingIds = new Set(currentStudents.map((student) => student.id));
 
-  return pastedStudents.map((student, index) => {
+  const normalizedPastedStudents = pastedStudents.map((student, index) => {
     const baseId = `paste-${Date.now()}-${index + 1}`;
     const id = existingIds.has(student.id) ? baseId : student.id || baseId;
     existingIds.add(id);
     return { ...student, id };
   });
+
+  return [...currentStudents, ...normalizedPastedStudents];
+}
+
+export function replaceStudentsFromPaste(pastedStudents: Student[]): Student[] {
+  return pastedStudents.map((student, index) => ({
+    ...student,
+    id: `paste-${Date.now()}-${index + 1}`
+  }));
 }
 
 function isHeaderRow(row: string[]): boolean {

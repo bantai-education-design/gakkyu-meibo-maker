@@ -12,6 +12,8 @@ interface DataEditorViewProps {
   onDeleteStudent: (id: string) => void;
   onDeleteSelected: (ids: string[]) => void;
   onClearStudents: () => void;
+  onRenumberStudents: () => void;
+  onDeleteBlankStudents: () => void;
   onReplaceStudents: (students: Student[], message: string) => void;
 }
 
@@ -39,6 +41,8 @@ export function DataEditorView({
   onDeleteStudent,
   onDeleteSelected,
   onClearStudents,
+  onRenumberStudents,
+  onDeleteBlankStudents,
   onReplaceStudents
 }: DataEditorViewProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -59,6 +63,19 @@ export function DataEditorView({
   const clearStudents = () => {
     if (window.confirm("すべての児童データを削除しますか？")) {
       onClearStudents();
+      setSelectedIds([]);
+    }
+  };
+
+  const renumberStudents = () => {
+    if (window.confirm("現在の順番で番号を1番から振り直します。よろしいですか？")) {
+      onRenumberStudents();
+    }
+  };
+
+  const deleteBlankStudents = () => {
+    if (window.confirm("空白行を削除します。よろしいですか？")) {
+      onDeleteBlankStudents();
       setSelectedIds([]);
     }
   };
@@ -94,6 +111,12 @@ export function DataEditorView({
         </button>
         <button className="secondary-button compact-action" type="button" onClick={addRow}>
           空行を追加
+        </button>
+        <button className="secondary-button compact-action" type="button" onClick={renumberStudents} disabled={students.length === 0}>
+          番号を振り直す
+        </button>
+        <button className="secondary-button compact-action" type="button" onClick={deleteBlankStudents} disabled={students.length === 0}>
+          空白行を削除
         </button>
         <button className="danger-button compact-action" type="button" onClick={deleteSelected} disabled={selectedIds.length === 0}>
           選択行を削除
