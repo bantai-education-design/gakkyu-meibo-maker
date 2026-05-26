@@ -80,9 +80,8 @@ export function CsvImportPanel({
   };
 
   return (
-    <section className="panel-section">
-      <h2>CSV読み込み</h2>
-      <label className="field">
+    <div className="compact-panel">
+      <label className="field compact-field">
         <span>文字コード</span>
         <select value={encoding} onChange={(event) => setEncoding(event.target.value as CsvEncoding)}>
           <option value="utf-8">UTF-8</option>
@@ -108,6 +107,6 @@ export function CsvImportPanel({
           onCancel={() => setPendingTable(null)}
         />
       ) : null}
-    </section>
+    </div>
   );
 }

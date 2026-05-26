@@ -28,8 +28,7 @@ export function StoragePanel({
   };
 
   return (
-    <section className="panel-section">
-      <h2>保存</h2>
+    <div className="compact-panel">
       <p className="privacy-note">
         実名の名簿データを扱う場合は、保存ファイルの取り扱いにご注意ください。共有PCでは使用後に保存データを削除してください。
       </p>
@@ -55,6 +54,6 @@ export function StoragePanel({
         </button>
       </div>
       {message ? <div className="storage-message">{message}</div> : null}
-    </section>
+    </div>
   );
 }

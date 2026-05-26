@@ -10,9 +10,8 @@ export function TemplatePanel({ selectedTemplate, onApplyTemplate }: TemplatePan
   const current = rosterTemplates.find((template) => template.type === selectedTemplate);
 
   return (
-    <section className="panel-section">
-      <h2>用途テンプレート</h2>
-      <label className="field">
+    <div className="compact-panel">
+      <label className="field compact-field">
         <span>用途を選ぶ</span>
         <select
           value={selectedTemplate}
@@ -26,6 +25,6 @@ export function TemplatePanel({ selectedTemplate, onApplyTemplate }: TemplatePan
         </select>
       </label>
       {current ? <p className="template-description">{current.description}</p> : null}
-    </section>
+    </div>
   );
 }

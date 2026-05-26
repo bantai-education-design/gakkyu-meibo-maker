@@ -146,6 +146,38 @@ export default function App() {
     );
   };
 
+  const addManualStudent = (student: Omit<Student, "id" | "visible">) => {
+    const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const nextStudent: Student = {
+      ...student,
+      id,
+      visible: true
+    };
+
+    setStudents((current) => [...current, nextStudent]);
+    setSettings((current) => ({
+      ...current,
+      customOrder: normalizeCustomOrder([...students, nextStudent], [...current.customOrder, id])
+    }));
+    setStorageMessage("児童を追加しました。");
+  };
+
+  const updateStudent = (id: string, patch: Partial<Student>) => {
+    setStudents((current) =>
+      current.map((student) => (student.id === id ? { ...student, ...patch } : student))
+    );
+    setStorageMessage("児童情報を更新しました。");
+  };
+
+  const deleteStudent = (id: string) => {
+    setStudents((current) => current.filter((student) => student.id !== id));
+    setSettings((current) => ({
+      ...current,
+      customOrder: current.customOrder.filter((studentId) => studentId !== id)
+    }));
+    setStorageMessage("児童を削除しました。");
+  };
+
   const moveStudent = (id: string, direction: "up" | "down") => {
     setSettings((current) => ({
       ...current,
@@ -249,6 +281,9 @@ export default function App() {
         onToggleStudent={toggleStudent}
         onMoveStudent={moveStudent}
         onGroupChange={updateStudentGroup}
+        onAddStudent={addManualStudent}
+        onUpdateStudent={updateStudent}
+        onDeleteStudent={deleteStudent}
         onPrint={() => window.print()}
       />
       <PreviewArea students={sortedStudents} settings={settings} />

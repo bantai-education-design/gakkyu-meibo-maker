@@ -1,6 +1,8 @@
 import type { RosterSettings, Student, TemplateType } from "../types";
 import { AppLogo } from "./AppLogo";
 import { CsvImportPanel, type CsvImportStatus } from "./CsvImportPanel";
+import { ManualStudentPanel } from "./ManualStudentPanel";
+import { PanelSection } from "./PanelSection";
 import { StoragePanel } from "./StoragePanel";
 import { StudentVisibilityList } from "./StudentVisibilityList";
 import { TemplatePanel } from "./TemplatePanel";
@@ -25,6 +27,9 @@ interface ControlPanelProps {
   onToggleStudent: (id: string) => void;
   onMoveStudent: (id: string, direction: "up" | "down") => void;
   onGroupChange: (id: string, group: string) => void;
+  onAddStudent: (student: Omit<Student, "id" | "visible">) => void;
+  onUpdateStudent: (id: string, patch: Partial<Student>) => void;
+  onDeleteStudent: (id: string) => void;
   onPrint: () => void;
 }
 
@@ -48,6 +53,9 @@ export function ControlPanel({
   onToggleStudent,
   onMoveStudent,
   onGroupChange,
+  onAddStudent,
+  onUpdateStudent,
+  onDeleteStudent,
   onPrint
 }: ControlPanelProps) {
   const isFirstGradeClass = /(?:1|１|一)\s*(?:年|学年)/.test(settings.classLabel);
@@ -64,43 +72,51 @@ export function ControlPanel({
 
   return (
     <aside className="control-panel">
-      <div className="app-title">
-        <AppLogo />
-        <span className="version-badge">v{version}</span>
+      <div className="compact-top">
+        <div className="app-title">
+          <AppLogo />
+          <span className="version-badge">v{version}</span>
+        </div>
+        <button className="print-button compact-print-button" type="button" onClick={onPrint}>
+          印刷する
+        </button>
       </div>
 
-      <button className="print-button" type="button" onClick={onPrint}>
-        印刷する
-      </button>
+      <PanelSection title="データ" defaultOpen>
+        <details className="inner-details">
+          <summary>CSVから読み込む</summary>
+          <CsvImportPanel
+            status={csvStatus}
+            onImport={onCsvImport}
+            onError={onCsvError}
+          />
+        </details>
+        <ManualStudentPanel
+          students={listedStudents}
+          onAddStudent={onAddStudent}
+          onUpdateStudent={onUpdateStudent}
+          onDeleteStudent={onDeleteStudent}
+        />
+        <details className="inner-details">
+          <summary>保存・読み込み</summary>
+          <StoragePanel
+            message={storageMessage}
+            hasSavedData={hasSavedData}
+            onSave={onSaveProject}
+            onLoad={onLoadProject}
+            onResetSample={onResetSample}
+            onDelete={onDeleteProject}
+            onExportJson={onExportJson}
+            onImportJson={onImportJson}
+          />
+        </details>
+      </PanelSection>
 
-      <div className="print-guidance">
-        きれいに印刷するには、印刷画面で「ヘッダーとフッター」をOFF、「背景のグラフィック」をONにしてください。余白は「なし」または「最小」がおすすめです。
-      </div>
-
-      <CsvImportPanel
-        status={csvStatus}
-        onImport={onCsvImport}
-        onError={onCsvError}
-      />
-
-      <StoragePanel
-        message={storageMessage}
-        hasSavedData={hasSavedData}
-        onSave={onSaveProject}
-        onLoad={onLoadProject}
-        onResetSample={onResetSample}
-        onDelete={onDeleteProject}
-        onExportJson={onExportJson}
-        onImportJson={onImportJson}
-      />
-
-      <TemplatePanel
-        selectedTemplate={settings.templateType}
-        onApplyTemplate={onApplyTemplate}
-      />
-
-      <section className="panel-section">
-        <h2>基本</h2>
+      <PanelSection title="基本" defaultOpen>
+        <TemplatePanel
+          selectedTemplate={settings.templateType}
+          onApplyTemplate={onApplyTemplate}
+        />
         <label className="field">
           <span>表のタイトル</span>
           <input value={settings.title} onChange={(event) => update("title", event.target.value)} />
@@ -158,7 +174,9 @@ export function ControlPanel({
           />
           <span>上に担任名を入れる</span>
         </label>
+      </PanelSection>
 
+      <PanelSection title="並べ替え・表示">
         <label className="field">
           <span>並び順</span>
           <select
@@ -228,10 +246,16 @@ export function ControlPanel({
             <span>備考を表示</span>
           </label>
         </div>
-      </section>
+        <StudentVisibilityList
+          students={listedStudents}
+          isCustomOrder={settings.sortMode === "custom"}
+          onToggle={onToggleStudent}
+          onMove={onMoveStudent}
+          onGroupChange={onGroupChange}
+        />
+      </PanelSection>
 
-      <section className="panel-section">
-        <h2>レイアウト</h2>
+      <PanelSection title="レイアウト">
         <div className="segmented">
           <button
             type="button"
@@ -285,17 +309,6 @@ export function ControlPanel({
           <span>ふりがなを表示する</span>
         </label>
 
-        <label className="field">
-          <span>文字</span>
-          <select
-            value={settings.layout.fontMode}
-            onChange={(event) => updateLayout("fontMode", event.target.value as RosterSettings["layout"]["fontMode"])}
-          >
-            <option value="gothic">ゴシック体</option>
-            <option value="mincho">明朝体</option>
-          </select>
-        </label>
-
         <label className="range-field">
           <span>行の高さ {settings.layout.rowGap}mm</span>
           <input
@@ -317,10 +330,9 @@ export function ControlPanel({
             onChange={(event) => updateLayout("marginMm", Number(event.target.value))}
           />
         </label>
-      </section>
+      </PanelSection>
 
-      <section className="panel-section">
-        <h2>用紙</h2>
+      <PanelSection title="用紙・文字">
         <div className="inline-grid">
           <label className="field">
             <span>サイズ</span>
@@ -344,18 +356,27 @@ export function ControlPanel({
             </select>
           </label>
         </div>
-      </section>
+        <label className="field">
+          <span>文字</span>
+          <select
+            value={settings.layout.fontMode}
+            onChange={(event) => updateLayout("fontMode", event.target.value as RosterSettings["layout"]["fontMode"])}
+          >
+            <option value="gothic">ゴシック体</option>
+            <option value="mincho">明朝体</option>
+          </select>
+        </label>
+      </PanelSection>
 
-      <section className="panel-section">
-        <h2>表示する児童</h2>
-        <StudentVisibilityList
-          students={listedStudents}
-          isCustomOrder={settings.sortMode === "custom"}
-          onToggle={onToggleStudent}
-          onMove={onMoveStudent}
-          onGroupChange={onGroupChange}
-        />
-      </section>
+      <PanelSection title="印刷">
+        <button className="print-button" type="button" onClick={onPrint}>
+          印刷する
+        </button>
+        <details className="print-guidance">
+          <summary>印刷時の注意</summary>
+          <p>ヘッダーとフッターをOFF、背景のグラフィックをON、余白はなしまたは最小がおすすめです。</p>
+        </details>
+      </PanelSection>
     </aside>
   );
 }
