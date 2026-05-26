@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ControlPanel } from "./components/ControlPanel";
 import type { CsvImportStatus } from "./components/CsvImportPanel";
+import { DataEditorView } from "./components/DataEditorView";
 import { PreviewArea } from "./components/PreviewArea";
 import { sampleStudents } from "./data/sampleStudents";
 import type { RosterSettings, Student, TemplateType } from "./types";
@@ -99,6 +100,7 @@ export default function App() {
   const initialState = useMemo(() => loadInitialState(), []);
   const [students, setStudents] = useState<Student[]>(initialState.students);
   const [settings, setSettings] = useState<RosterSettings>(initialState.settings);
+  const [viewMode, setViewMode] = useState<"print" | "data">("print");
   const [storageMessage, setStorageMessage] = useState(initialState.message);
   const [hasSavedData, setHasSavedData] = useState(() => hasSavedRosterProject());
   const [csvStatus, setCsvStatus] = useState<CsvImportStatus>({
@@ -181,6 +183,22 @@ export default function App() {
     setStorageMessage("児童を削除しました。");
   };
 
+  const deleteSelectedStudents = (ids: string[]) => {
+    const deleteIds = new Set(ids);
+    setStudents((current) => current.filter((student) => !deleteIds.has(student.id)));
+    setSettings((current) => ({
+      ...current,
+      customOrder: current.customOrder.filter((studentId) => !deleteIds.has(studentId))
+    }));
+    setStorageMessage("選択した児童を削除しました。");
+  };
+
+  const clearStudents = () => {
+    setStudents([]);
+    setSettings((current) => ({ ...current, customOrder: [] }));
+    setStorageMessage("すべての児童データを削除しました。");
+  };
+
   const moveStudent = (id: string, direction: "up" | "down") => {
     setSettings((current) => ({
       ...current,
@@ -196,6 +214,15 @@ export default function App() {
       customOrder: nextStudents.map((student) => student.id)
     }));
     setCsvStatus({ kind: "success", message });
+  };
+
+  const replaceStudents = (nextStudents: Student[], message: string) => {
+    setStudents(nextStudents);
+    setSettings((current) => ({
+      ...current,
+      customOrder: normalizeCustomOrder(nextStudents, current.customOrder)
+    }));
+    setStorageMessage(message);
   };
 
   const resetSampleStudents = () => {
@@ -262,6 +289,21 @@ export default function App() {
     setStorageMessage("用途テンプレートを反映しました。");
   };
 
+  if (viewMode === "data") {
+    return (
+      <DataEditorView
+        students={students}
+        onBackToPrint={() => setViewMode("print")}
+        onAddStudent={addManualStudent}
+        onUpdateStudent={updateStudent}
+        onDeleteStudent={deleteStudent}
+        onDeleteSelected={deleteSelectedStudents}
+        onClearStudents={clearStudents}
+        onReplaceStudents={replaceStudents}
+      />
+    );
+  }
+
   return (
     <div className="app-shell">
       <ControlPanel
@@ -287,6 +329,7 @@ export default function App() {
         onAddStudent={addManualStudent}
         onUpdateStudent={updateStudent}
         onDeleteStudent={deleteStudent}
+        onOpenDataEditor={() => setViewMode("data")}
         onPrint={() => window.print()}
       />
       <PreviewArea students={sortedStudents} settings={settings} />

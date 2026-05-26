@@ -30,6 +30,7 @@ interface ControlPanelProps {
   onAddStudent: (student: Omit<Student, "id" | "visible">) => void;
   onUpdateStudent: (id: string, patch: Partial<Student>) => void;
   onDeleteStudent: (id: string) => void;
+  onOpenDataEditor: () => void;
   onPrint: () => void;
 }
 
@@ -56,6 +57,7 @@ export function ControlPanel({
   onAddStudent,
   onUpdateStudent,
   onDeleteStudent,
+  onOpenDataEditor,
   onPrint
 }: ControlPanelProps) {
   const isFirstGradeClass = /(?:1|１|一)\s*(?:年|学年)/.test(settings.classLabel);
@@ -80,9 +82,20 @@ export function ControlPanel({
         <button className="print-button compact-print-button" type="button" onClick={onPrint}>
           印刷する
         </button>
+        <div className="view-switch panel-view-switch">
+          <button type="button" className="active">
+            印刷プレビュー
+          </button>
+          <button type="button" onClick={onOpenDataEditor}>
+            データ編集
+          </button>
+        </div>
       </div>
 
       <PanelSection title="データ" defaultOpen>
+        <button className="primary-action data-editor-open" type="button" onClick={onOpenDataEditor}>
+          データ編集画面を開く
+        </button>
         <details className="inner-details">
           <summary>CSVから読み込む</summary>
           <CsvImportPanel

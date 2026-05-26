@@ -73,8 +73,8 @@ export function ManualStudentPanel({
 
   return (
     <div className="manual-panel">
-      <details className="inner-details" open>
-        <summary>手入力で児童を追加</summary>
+      <details className="inner-details">
+        <summary>簡易追加</summary>
         <div className="manual-form">
           <label className="field compact-field">
             <span>番号</span>
