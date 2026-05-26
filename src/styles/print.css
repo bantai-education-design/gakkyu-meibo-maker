@@ -122,6 +122,13 @@
     white-space: nowrap;
   }
 
+  .name-kana-only {
+    max-width: none;
+    overflow: visible;
+    transform-origin: left center;
+    white-space: nowrap;
+  }
+
   rt {
     letter-spacing: 0;
     line-height: 1;

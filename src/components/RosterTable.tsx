@@ -15,6 +15,15 @@ function getNameLengthClass(value: string): string {
   return "name-length-short";
 }
 
+function getKanaLengthClass(value: string): string {
+  const length = Array.from(value.replace(/\s/g, "")).length;
+  if (length >= 11) return "kana-length-long";
+  if (length >= 9) return "kana-length-10";
+  if (length >= 7) return "kana-length-8";
+  if (length >= 6) return "kana-length-6";
+  return "kana-length-short";
+}
+
 function getKanjiName(student: Student): { full?: string; last: string; first: string } {
   return {
     full: student.fullName && !student.firstName ? student.fullName : undefined,
@@ -55,8 +64,10 @@ function NameDisplay({ student, mode }: { student: Student; mode: NameDisplayMod
   const spacingClass = mode === "kanjiWithKana" ? "name-with-kana" : "name-without-kana";
 
   if (mode === "kanaOnly") {
+    const kanaLengthClass = getKanaLengthClass(joinNameParts(displayName));
+
     return (
-      <span className={`full-name-text name-kana-only ${lengthClass}`}>
+      <span className={`full-name-text name-kana-only ${lengthClass} ${kanaLengthClass}`}>
         {displayName.full ? (
           <span className="name-part">{displayName.full}</span>
         ) : (
@@ -115,14 +126,18 @@ function TableBlock({
   const visibleColumns = settings.visibleColumns;
   const isTwoColumn = settings.layout.columns === 2;
   const hasManyChecks = settings.layout.checkColumnCount >= 10;
+  const isKanaOnly = settings.nameDisplayMode === "kanaOnly";
   const numberColumnWidth = isTwoColumn
     ? Math.min(settings.layout.numberColumnWidth, 26)
     : settings.layout.numberColumnWidth;
-  const nameColumnWidth = isTwoColumn
-    ? Math.min(settings.layout.nameColumnWidth, 82)
+  const baseNameColumnWidth = isTwoColumn
+    ? Math.min(settings.layout.nameColumnWidth, isKanaOnly ? 88 : 82)
     : hasManyChecks
-      ? Math.min(settings.layout.nameColumnWidth, 94)
+      ? Math.min(settings.layout.nameColumnWidth, isKanaOnly ? 102 : 94)
       : settings.layout.nameColumnWidth;
+  const nameColumnWidth = isKanaOnly && !isTwoColumn
+    ? Math.min(baseNameColumnWidth + 8, 106)
+    : baseNameColumnWidth;
   const checkColumnWidth = isTwoColumn && hasManyChecks
     ? Math.min(settings.layout.checkColumnMinWidth, 13)
     : hasManyChecks
@@ -164,7 +179,12 @@ function TableBlock({
     "--name-font-size": `${nameFontSize}px`,
     "--name-font-size-5": `${Math.min(nameFontSize, hasRuby ? 15.2 : 16.5)}px`,
     "--name-font-size-6": `${Math.min(nameFontSize, hasRuby ? 14.4 : 15.5)}px`,
-    "--name-font-size-long": `${Math.min(nameFontSize, hasRuby ? 13.4 : 14)}px`
+    "--name-font-size-long": `${Math.min(nameFontSize, hasRuby ? 13.4 : 14)}px`,
+    "--kana-font-size-short": `${Math.min(nameFontSize, 18)}px`,
+    "--kana-font-size-6": `${Math.min(nameFontSize, 17)}px`,
+    "--kana-font-size-8": `${Math.min(nameFontSize, 16)}px`,
+    "--kana-font-size-10": `${Math.min(nameFontSize, 14.7)}px`,
+    "--kana-font-size-long": `${Math.min(nameFontSize, 13.6)}px`
   } as CSSProperties;
 
   return (
