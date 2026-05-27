@@ -131,12 +131,12 @@ function TableBlock({
     ? Math.min(settings.layout.numberColumnWidth, 26)
     : settings.layout.numberColumnWidth;
   const baseNameColumnWidth = isTwoColumn
-    ? Math.min(settings.layout.nameColumnWidth, isKanaOnly ? 88 : 82)
+    ? Math.min(settings.layout.nameColumnWidth, isKanaOnly ? 98 : 94)
     : hasManyChecks
-      ? Math.min(settings.layout.nameColumnWidth, isKanaOnly ? 102 : 94)
+      ? Math.min(settings.layout.nameColumnWidth, isKanaOnly ? 112 : 108)
       : settings.layout.nameColumnWidth;
   const nameColumnWidth = isKanaOnly && !isTwoColumn
-    ? Math.min(baseNameColumnWidth + 8, 106)
+    ? Math.min(baseNameColumnWidth + 4, 118)
     : baseNameColumnWidth;
   const checkColumnWidth = isTwoColumn && hasManyChecks
     ? Math.min(settings.layout.checkColumnMinWidth, 13)
@@ -148,9 +148,9 @@ function TableBlock({
     ? settings.layout.nameFontSize
     : settings.layout.nameFontSizeNoKana;
   const nameFontSize = isTwoColumn && hasManyChecks
-    ? Math.min(baseNameFontSize, hasRuby ? 14.5 : 16)
+    ? Math.min(baseNameFontSize, hasRuby ? 15 : 16.2)
     : isTwoColumn || hasManyChecks
-      ? Math.min(baseNameFontSize, hasRuby ? 15 : 16.5)
+      ? Math.min(baseNameFontSize, hasRuby ? 15.4 : 16.7)
       : baseNameFontSize;
   const genderColumnWidth = 38;
   const birthdayColumnWidth = 82;
@@ -177,14 +177,14 @@ function TableBlock({
       ? `max(${checkColumnWidth}px, calc((100% - ${fixedColumnsWidth}px) / ${checks.length}))`
       : `${checkColumnWidth}px`,
     "--name-font-size": `${nameFontSize}px`,
-    "--name-font-size-5": `${Math.min(nameFontSize, hasRuby ? 15.2 : 16.5)}px`,
-    "--name-font-size-6": `${Math.min(nameFontSize, hasRuby ? 14.4 : 15.5)}px`,
-    "--name-font-size-long": `${Math.min(nameFontSize, hasRuby ? 13.4 : 14)}px`,
-    "--kana-font-size-short": `${Math.min(nameFontSize, 18)}px`,
-    "--kana-font-size-6": `${Math.min(nameFontSize, 17)}px`,
-    "--kana-font-size-8": `${Math.min(nameFontSize, 16)}px`,
-    "--kana-font-size-10": `${Math.min(nameFontSize, 14.7)}px`,
-    "--kana-font-size-long": `${Math.min(nameFontSize, 13.6)}px`
+    "--name-font-size-5": `${Math.min(nameFontSize, hasRuby ? 15.6 : 17.1)}px`,
+    "--name-font-size-6": `${Math.min(nameFontSize, hasRuby ? 15.1 : 16.6)}px`,
+    "--name-font-size-long": `${Math.min(nameFontSize, hasRuby ? 14.6 : 16)}px`,
+    "--kana-font-size-short": `${Math.min(nameFontSize, 17.2)}px`,
+    "--kana-font-size-6": `${Math.min(nameFontSize, 16.8)}px`,
+    "--kana-font-size-8": `${Math.min(nameFontSize, 16.2)}px`,
+    "--kana-font-size-10": `${Math.min(nameFontSize, 15.4)}px`,
+    "--kana-font-size-long": `${Math.min(nameFontSize, 14.7)}px`
   } as CSSProperties;
 
   return (

@@ -1129,7 +1129,7 @@ select {
   table-layout: fixed;
   font-size: 9.5pt;
   --number-column-width: 28px;
-  --name-column-width: 98px;
+  --name-column-width: 114px;
   --check-column-min-width: 20px;
   --check-column-width: auto;
   --name-font-size: 16.25px;
@@ -1274,7 +1274,7 @@ select {
 }
 
 .name-length-5 {
-  gap: 0.25mm;
+  gap: 0.2mm;
   font-size: var(--name-font-size-5);
   letter-spacing: 0;
 }
@@ -1282,13 +1282,13 @@ select {
 .name-length-6 {
   gap: 0;
   font-size: var(--name-font-size-6);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.025em;
 }
 
 .name-length-long {
   gap: 0;
   font-size: var(--name-font-size-long);
-  letter-spacing: -0.055em;
+  letter-spacing: -0.04em;
 }
 
 .name-kana-only.kana-length-short {
@@ -1300,28 +1300,28 @@ select {
 .name-kana-only.kana-length-6 {
   gap: 0;
   font-size: var(--kana-font-size-6);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .name-kana-only.kana-length-8 {
   gap: 0;
   font-size: var(--kana-font-size-8);
-  letter-spacing: -0.08em;
-  transform: scaleX(0.94);
+  letter-spacing: -0.055em;
+  transform: scaleX(0.97);
 }
 
 .name-kana-only.kana-length-10 {
   gap: 0;
   font-size: var(--kana-font-size-10);
-  letter-spacing: -0.12em;
-  transform: scaleX(0.86);
+  letter-spacing: -0.09em;
+  transform: scaleX(0.93);
 }
 
 .name-kana-only.kana-length-long {
   gap: 0;
   font-size: var(--kana-font-size-long);
-  letter-spacing: -0.15em;
-  transform: scaleX(0.78);
+  letter-spacing: -0.11em;
+  transform: scaleX(0.9);
 }
 
 .name-col .full-name-text {

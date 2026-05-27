@@ -48,10 +48,10 @@ const initialSettings: RosterSettings = {
     orientation: "portrait",
     splitGenderColumns: true,
     numberColumnWidth: 28,
-    nameColumnWidth: 98,
+    nameColumnWidth: 114,
     checkColumnMinWidth: 20,
-    nameFontSize: 16.25,
-    nameFontSizeNoKana: 18.5
+    nameFontSize: 15.8,
+    nameFontSizeNoKana: 17.4
   }
 };
 
