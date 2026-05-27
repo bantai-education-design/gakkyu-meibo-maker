@@ -1,5 +1,12 @@
 # 変更履歴
 
+## v0.6.3 - 2026-05-26
+
+- Windows配布用に `npm run dist` を追加し、electron-builderでポータブル版exeを作成できる構成に変更
+- `electron:build` はunpacked形式の確認用、`dist` は配布物作成用としてnpm scriptsを整理
+- Windows用のartifact名を `${productName}-${version}-${arch}.${ext}` に設定
+- `README_Windows.md` を追加し、Windows版の起動方法、個人情報の取り扱い、JSON保存、印刷時の注意を記載
+
 ## v0.6.2 - 2026-05-26
 
 - 氏名表記「ひらがな」専用の文字数クラスを追加し、長いひらがな氏名でも右端で欠けにくい表示に調整
