@@ -1459,3 +1459,80 @@ rt {
     grid-template-columns: 1fr;
   }
 }
+
+.pwa-status-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.pwa-alert {
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pwa-alert p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.pwa-alert button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.update-alert {
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  color: #664d03;
+}
+
+.update-alert button {
+  background: #ffc107;
+  color: #000;
+}
+
+.install-alert {
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  color: #0c4a6e;
+}
+
+.install-alert button {
+  background: #0ea5e9;
+  color: #fff;
+}
+
+.offline-alert {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+.pwa-privacy-notice {
+  font-size: 12px;
+  color: #64748b;
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  line-height: 1.5;
+}
+
+.pwa-privacy-notice p {
+  margin: 0 0 6px 0;
+}
+.pwa-privacy-notice p:last-child {
+  margin-bottom: 0;
+}
+

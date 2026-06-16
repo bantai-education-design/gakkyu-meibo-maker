@@ -6,6 +6,7 @@ import { PanelSection } from "./PanelSection";
 import { StoragePanel } from "./StoragePanel";
 import { StudentVisibilityList } from "./StudentVisibilityList";
 import { TemplatePanel } from "./TemplatePanel";
+import { PwaStatus } from "./PwaStatus";
 
 interface ControlPanelProps {
   settings: RosterSettings;
@@ -91,6 +92,8 @@ export function ControlPanel({
           </button>
         </div>
       </div>
+
+      <PwaStatus />
 
       <PanelSection title="データ" defaultOpen>
         <button className="primary-action data-editor-open" type="button" onClick={onOpenDataEditor}>
