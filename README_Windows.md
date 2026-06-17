@@ -6,7 +6,9 @@
 
 ## バージョン
 
-v0.6.5
+v0.7.0
+
+※本バージョンはPWA対応を追加した開発・試験版です。最初の正式製品版はv1.0.0を予定しています。
 
 ## 取り扱い種別
 
@@ -54,7 +56,7 @@ https://sites.google.com/view/bantai-education-design
 ## インストール方法
 
 1. ZIPファイルを展開します。
-2. 展開したフォルダー内の `ClassRosterMaker-0.6.5-x64.exe` を起動します。
+2. 展開したフォルダー内の `ClassRosterMaker-0.7.0-x64.exe` を起動します。
 
 インストール作業は不要です。
 
