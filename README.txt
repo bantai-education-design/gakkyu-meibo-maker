@@ -2,11 +2,10 @@
 学級名簿メーカー
 
 バージョン：
-v0.7.0
+v1.0.0
 
 位置付け：
-PWA対応を追加した開発・試験版
-※最初の正式製品版はv1.0.0を予定しています。
+正式版
 
 取り扱い種別：
 フリーソフト
@@ -15,7 +14,7 @@ PWA対応を追加した開発・試験版
 Ban.Tai Education Design
 
 公式ホームページ：
-https://sites.google.com/view/bantai-education-design
+https://bantai-education-design.github.io/products/class-roster/
 
 お問い合わせ：
 ban.tai3educationdesign@gmail.com
@@ -25,7 +24,7 @@ Windows 10 / Windows 11
 64bit環境推奨
 
 インストール方法：
-ZIPを展開し、ClassRosterMaker-0.7.0-x64.exeを起動
+ZIPを展開し、ClassRosterMaker-1.0.0-x64.exeを起動
 
 アンインストール方法：
 展開したフォルダーを削除

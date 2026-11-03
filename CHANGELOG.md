@@ -1,5 +1,14 @@
 # 変更履歴
 
+## v1.0.0 - 2026-11-03
+
+- 最初の正式版として公開
+- CSVの文字コード自動判定を追加（Shift-JIS／UTF-8）
+- 列対応確認の案内をエラー色で表示しないように修正
+- Windows版exe名を ClassRosterMaker-1.0.0-x64.exe に統一
+- package-lock.json のバージョン不一致を修正
+- 配布用説明書の公式ホームページURLを更新
+
 ## v0.7.0 - 2026-06-16
 
 - PWA（Progressive Web App）対応を追加
