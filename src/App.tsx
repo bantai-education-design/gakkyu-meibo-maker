@@ -339,7 +339,7 @@ export default function App() {
         storageMessage={storageMessage}
         hasSavedData={hasSavedData}
         onCsvImport={importStudents}
-        onCsvError={(message) => setCsvStatus({ kind: "error", message })}
+        onCsvError={(message) => setCsvStatus({ kind: message.startsWith("CSVの列対応を確認") ? "idle" : "error", message })}
         onResetSample={resetSampleStudents}
         onSaveProject={saveCurrentProject}
         onLoadProject={loadSavedProject}

@@ -1,7 +1,7 @@
 import type { Student } from "../types";
 import { convertRowsToStudents, inferColumnMapping, type CsvColumnMapping } from "./csvColumnMapping";
 
-export type CsvEncoding = "utf-8" | "shift_jis";
+export type CsvEncoding = "auto" | "utf-8" | "shift_jis";
 
 export interface CsvTable {
   headers: string[];
@@ -23,6 +23,14 @@ export type CsvImportResult = CsvImportSuccess | CsvImportFailure;
 export type CsvTableResult = { ok: true; table: CsvTable } | CsvImportFailure;
 
 export function decodeCsvBuffer(buffer: ArrayBuffer, encoding: CsvEncoding): string {
+  if (encoding === "auto") {
+    // UTF-8として正しく読めればUTF-8、読めなければExcel標準のShift-JISとして読む
+    try {
+      return new TextDecoder("utf-8", { fatal: true }).decode(buffer);
+    } catch {
+      return new TextDecoder("shift_jis", { fatal: false }).decode(buffer);
+    }
+  }
   const decoder = new TextDecoder(encoding, { fatal: false });
   return decoder.decode(buffer);
 }

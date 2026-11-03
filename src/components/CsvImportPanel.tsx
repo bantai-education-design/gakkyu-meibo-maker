@@ -26,12 +26,12 @@ export function CsvImportPanel({
   onImport,
   onError
 }: CsvImportPanelProps) {
-  const [encoding, setEncoding] = useState<CsvEncoding>("utf-8");
+  const [encoding, setEncoding] = useState<CsvEncoding>("auto");
   const [pendingTable, setPendingTable] = useState<CsvTable | null>(null);
   const [mapping, setMapping] = useState<CsvColumnMapping>({});
   const [mojibakeDetected, setMojibakeDetected] = useState(false);
 
-  const mojibakeWarning = "文字化けしている可能性があります。文字コードを Shift-JIS に変更してもう一度読み込んでください。";
+  const mojibakeWarning = "文字化けしている可能性があります。文字コードを切り替えて、もう一度読み込んでください。";
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -84,6 +84,7 @@ export function CsvImportPanel({
       <label className="field compact-field">
         <span>文字コード</span>
         <select value={encoding} onChange={(event) => setEncoding(event.target.value as CsvEncoding)}>
+          <option value="auto">自動判定（おすすめ）</option>
           <option value="utf-8">UTF-8</option>
           <option value="shift_jis">Shift-JIS</option>
         </select>
@@ -93,7 +94,7 @@ export function CsvImportPanel({
         <input type="file" accept=".csv,text/csv" onChange={handleFileChange} />
       </label>
       <p className="csv-help">
-        CSVを選ぶと、先に列の対応を確認できます。文字化けする場合は、文字コードをShift-JISに変更して同じCSVをもう一度選んでください。
+        CSVを選ぶと、先に列の対応を確認できます。Excelで保存したCSV（Shift-JIS）もUTF-8も、そのまま読み込めます。文字化けする場合だけ、文字コードを切り替えて同じCSVをもう一度選んでください。
       </p>
       {status.message ? (
         <div className={`csv-status ${status.kind}`}>{status.message}</div>
